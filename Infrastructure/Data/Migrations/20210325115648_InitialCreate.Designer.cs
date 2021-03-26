@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    partial class MovieContextModelSnapshot : ModelSnapshot
+    [Migration("20210325115648_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,13 +137,13 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.MovieActor", b =>
                 {
                     b.HasOne("Core.Entities.Actor", "Actor")
-                        .WithMany("MoviesLink")
+                        .WithMany("Movies")
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Movie", "Movie")
-                        .WithMany("ActorsLink")
+                        .WithMany("Actors")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -154,13 +156,13 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.MovieDirector", b =>
                 {
                     b.HasOne("Core.Entities.Director", "Director")
-                        .WithMany("MoviesLink")
+                        .WithMany("Movies")
                         .HasForeignKey("DirectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Movie", "Movie")
-                        .WithMany("DirectorsLink")
+                        .WithMany("Directors")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -173,13 +175,13 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.MovieWriter", b =>
                 {
                     b.HasOne("Core.Entities.Movie", "Movie")
-                        .WithMany("WritersLink")
+                        .WithMany("Writers")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Writer", "Writer")
-                        .WithMany("MoviesLink")
+                        .WithMany("Movies")
                         .HasForeignKey("WriterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -191,26 +193,26 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Actor", b =>
                 {
-                    b.Navigation("MoviesLink");
+                    b.Navigation("Movies");
                 });
 
             modelBuilder.Entity("Core.Entities.Director", b =>
                 {
-                    b.Navigation("MoviesLink");
+                    b.Navigation("Movies");
                 });
 
             modelBuilder.Entity("Core.Entities.Movie", b =>
                 {
-                    b.Navigation("ActorsLink");
+                    b.Navigation("Actors");
 
-                    b.Navigation("DirectorsLink");
+                    b.Navigation("Directors");
 
-                    b.Navigation("WritersLink");
+                    b.Navigation("Writers");
                 });
 
             modelBuilder.Entity("Core.Entities.Writer", b =>
                 {
-                    b.Navigation("MoviesLink");
+                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }

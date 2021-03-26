@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Core.Entities
+namespace API.DTO
 {
-    public class Movie
+    public class MovieToReturnDto
     {
         public int MovieId { get; set; }
         public string Title { get; set; }
@@ -12,8 +12,8 @@ namespace Core.Entities
         public string AgeRating { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int Duration { get; set; }
-        public ICollection<MovieWriter> WritersLink { get; set; }
-        public ICollection<MovieActor> ActorsLink { get; set; }
-        public ICollection<MovieDirector> DirectorsLink { get; set; }
+        public ICollection<string> Writers { get; set; }
+        public ICollection<string> Actors { get; set; }  
+        public ICollection<string> Directors { get; set; } 
     }
 }
