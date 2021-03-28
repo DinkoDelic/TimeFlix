@@ -12,9 +12,15 @@ namespace API.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieRepository _movieRepo;
+        private readonly ICrewRepository<Actor> _actorRepo;
+        private readonly ICrewRepository<Writer> _writerRepo;
+        private readonly ICrewRepository<Director> _directorRepo;
 
-        public MovieController(IMovieRepository movieRepo)
+        public MovieController(IMovieRepository movieRepo, ICrewRepository<Actor> actorRepo, ICrewRepository<Writer> writerRepo, ICrewRepository<Director> directorRepo)
         {
+            _directorRepo = directorRepo;
+            _writerRepo = writerRepo;
+            _actorRepo = actorRepo;
             _movieRepo = movieRepo;
         }
 
@@ -50,7 +56,7 @@ namespace API.Controllers
         {
             var movie = await _movieRepo.GetMovieByIdAsync(id);
 
-            if(movie == null)
+            if (movie == null)
                 return NoContent();
 
             var movieToReturn = new MovieToReturnDto()
@@ -71,9 +77,9 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMovie(MovieToReturnDto movieToCreate)
+        public async Task<IActionResult> CreateMovie([FromBody] MovieToReturnDto movieToCreate)
         {
-            var createdMovie = new Movie()
+            var createdMovie = new Movie
             {
                 Title = movieToCreate.Title,
                 Genre = movieToCreate.Genre,
@@ -82,48 +88,39 @@ namespace API.Controllers
                 ReleaseDate = movieToCreate.ReleaseDate,
                 Duration = movieToCreate.Duration
             };
-            
+
             var writersList = new List<MovieWriter>();
-            foreach (string name in movieToCreate.Writers)
+            foreach (Writer w in movieToCreate.Writers)
             {
-                writersList.Add(new MovieWriter()
+                writersList.Add(new MovieWriter
                 {
                     Movie = createdMovie,
-                    Writer = new Writer()
-                    {
-                        Name = name
-                    }
+                    Writer = await _writerRepo.GetByIdAsync(w.WriterId) ?? new Writer { Name = w.Name.Trim() }
                 });
             }
             createdMovie.WritersLink = writersList;
 
-            var actorsList = new List<MovieActor>();
-            foreach (string name in movieToCreate.Actors)
+            var actorList = new List<MovieActor>();
+            foreach (Actor a in movieToCreate.Actors)
             {
-                actorsList.Add(new MovieActor()
+                actorList.Add(new MovieActor
                 {
                     Movie = createdMovie,
-                    Actor = new Actor()
-                    {
-                        Name = name
-                    }
+                    Actor = await _actorRepo.GetByIdAsync(a.ActorId) ?? new Actor { Name = a.Name.Trim() }
                 });
             }
-            createdMovie.ActorsLink = actorsList;
+            createdMovie.ActorsLink = actorList;
 
-            var directorsLink = new List<MovieDirector>();
-            foreach (string name in movieToCreate.Directors)
+            var directorList = new List<MovieDirector>();
+            foreach (Director d in movieToCreate.Directors)
             {
-                directorsLink.Add(new MovieDirector()
+                directorList.Add(new MovieDirector
                 {
                     Movie = createdMovie,
-                    Director = new Director()
-                    {
-                        Name = name
-                    }
+                    Director = await _directorRepo.GetByIdAsync(d.DirectorId) ?? new Director { Name = d.Name.Trim() }
                 });
             }
-            createdMovie.DirectorsLink = directorsLink;
+            createdMovie.DirectorsLink = directorList;
 
             await _movieRepo.CreateMovieAsync(createdMovie);
 
@@ -131,5 +128,13 @@ namespace API.Controllers
 
             return CreatedAtRoute("GetMovie", new { controller = "Movie", id = createdMovie.MovieId }, movieToCreate);
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMovie(int id)
+        {
+            await _movieRepo.DeleteMovieByIdAsync(id);
+            return NoContent();
+        }
     }
+
+
 }

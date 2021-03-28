@@ -4,9 +4,8 @@ using Core.Entities;
 
 namespace API.DTO
 {
-    public class MovieToReturnDto
+    public class MovieToCreateDto
     {
-        public int MovieId { get; set; }
         public string Title { get; set; }
         public string Genre { get; set; }
         public string Storyline { get; set; }

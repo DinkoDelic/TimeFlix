@@ -1,8 +1,12 @@
+using System.Linq;
+using API.Errors;
+using API.Middleware;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +31,29 @@ namespace API
 
             services.AddControllers();
 
-            services.AddScoped<IMovieRepository, MovieRepository>();
+            // Grabbing validation errors from model state so that we return an array of errors 
+            // which makes it really easy to receive them client side
+            services.Configure<ApiBehaviorOptions>(options => {
+                options.InvalidModelStateResponseFactory = actionContext => {
+                    var errors = actionContext.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value.Errors)
+                        .Select(x => x.ErrorMessage).ToArray();
 
+                    var errorResponse = new ApiValidationErrorResponse
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
+
+            // Registering our repositories to enable dependency injections in controllers
+            services.AddScoped<IMovieRepository, MovieRepository>();
+            services.AddScoped(typeof(ICrewRepository<>),(typeof(CrewRepository<>)));
+
+            // Using sqlite as db choice 
             services.AddDbContext<MovieContext>(x =>
                 x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
 
@@ -41,12 +66,17 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Used to handle server errors
+            app.UseMiddleware<ExceptionMiddleware>();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
+
+            // Requests to invalid endpoints get redirected to our error controller
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseHttpsRedirection();
 

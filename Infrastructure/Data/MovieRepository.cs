@@ -16,15 +16,26 @@ namespace Infrastructure.Data
             _movieContext = movieContext;
         }
 
+        public async Task<bool> SaveChangesAsync()
+        {   
+            if(await _movieContext.SaveChangesAsync() > 1)
+                return true;
+
+            return false;
+        }
+
         public async Task CreateMovieAsync(Movie movieToCreate)
         {
             _movieContext.Movies.Add(movieToCreate);
             await _movieContext.SaveChangesAsync();
         }
 
-        public Task DeleteMovieByIdAsync(int id)
+        public async Task DeleteMovieByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var movieToDelete = await _movieContext.Movies.FirstAsync(m => m.MovieId == id);
+            if(movieToDelete != null)
+                _movieContext.Movies.Remove(movieToDelete);
+            await _movieContext.SaveChangesAsync();
         }
 
         public async Task<List<Movie>> GetAllMoviesAsync()
@@ -45,23 +56,23 @@ namespace Infrastructure.Data
             throw new System.NotImplementedException();
         }
 
-        public async Task<List<string>> GetMovieActorsAsync(int id)
+        public async Task<List<Actor>> GetMovieActorsAsync(int id)
         {
-            var actors= await _movieContext.MoviesActors.Where(m => m.MovieId == id).Select(m => m.Actor.Name).ToListAsync();
+            var actors= await _movieContext.MoviesActors.Where(m => m.MovieId == id).Select(m => m.Actor).ToListAsync();
 
             return actors;
         }
 
-        public async Task<List<string>> GetMovieWritersAsync(int id)
+        public async Task<List<Writer>> GetMovieWritersAsync(int id)
         {
-            var writers= await _movieContext.MoviesWriters.Where(m => m.MovieId == id).Select(m => m.Writer.Name).ToListAsync();
+            var writers= await _movieContext.MoviesWriters.Where(m => m.MovieId == id).Select(m => m.Writer).ToListAsync();
 
             return writers;
         }
 
-        public async Task<List<string>> GetMovieDirectorsAsync(int id)
+        public async Task<List<Director>> GetMovieDirectorsAsync(int id)
         {
-            var directors= await _movieContext.MoviesDrectors.Where(m => m.MovieId == id).Select(m => m.Director.Name).ToListAsync();
+            var directors= await _movieContext.MoviesDrectors.Where(m => m.MovieId == id).Select(m => m.Director).ToListAsync();
 
             return directors;
         }

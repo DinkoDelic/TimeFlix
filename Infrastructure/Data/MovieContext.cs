@@ -37,7 +37,6 @@ namespace Infrastructure.Data
             modelBuilder.Entity<MovieWriter>()             
             .HasKey(x => new {x.MovieId , x.WriterId});
 
-        
             modelBuilder.Entity<MovieWriter>() 
             .HasOne(pt => pt.Movie)
             .WithMany(p => p.WritersLink)
@@ -48,7 +47,7 @@ namespace Infrastructure.Data
             .WithMany(t => t.MoviesLink)
             .HasForeignKey(pt => pt.WriterId);
 
-            //many-to-many movie-writer relatonship
+            //many-to-many movie-director relatonship
             modelBuilder.Entity<MovieDirector>()             
             .HasKey(x => new {x.MovieId , x.DirectorId});
 
