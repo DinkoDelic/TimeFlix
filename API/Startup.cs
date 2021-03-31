@@ -1,5 +1,6 @@
 using System.Linq;
 using API.Errors;
+using API.Helpers;
 using API.Middleware;
 using Core.Entities;
 using Core.Interfaces;
@@ -52,6 +53,7 @@ namespace API
             // Registering our repositories to enable dependency injections in controllers
             services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddScoped(typeof(ICrewRepository<>),(typeof(CrewRepository<>)));
+            services.AddScoped<Mapper>();
 
             // Using sqlite as db choice 
             services.AddDbContext<MovieContext>(x =>

@@ -18,28 +18,34 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Actor", b =>
                 {
-                    b.Property<int>("ActorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ActorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Actors");
                 });
 
             modelBuilder.Entity("Core.Entities.Director", b =>
                 {
-                    b.Property<int>("DirectorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("DirectorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Directors");
                 });
@@ -85,7 +91,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("ActorId");
 
-                    b.ToTable("MoviesActors");
+                    b.ToTable("MovieActor");
                 });
 
             modelBuilder.Entity("Core.Entities.MovieDirector", b =>
@@ -100,7 +106,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("DirectorId");
 
-                    b.ToTable("MoviesDrectors");
+                    b.ToTable("MovieDirector");
                 });
 
             modelBuilder.Entity("Core.Entities.MovieWriter", b =>
@@ -115,19 +121,22 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("WriterId");
 
-                    b.ToTable("MoviesWriters");
+                    b.ToTable("MovieWriter");
                 });
 
             modelBuilder.Entity("Core.Entities.Writer", b =>
                 {
-                    b.Property<int>("WriterId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("WriterId");
+                    b.HasKey("Id");
 
                     b.ToTable("Writers");
                 });

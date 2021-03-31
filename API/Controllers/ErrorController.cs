@@ -5,6 +5,8 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("errors/{code}")]
+    // We ignore this controller to avoid swagger error
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : ControllerBase
     {
         // Client gets redirected to this controller after they make a request to invalid endpoint

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.Errors;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +28,19 @@ namespace API.Controllers
         {
             var actors = await _actorRepo.ListAllAsync();
 
+            if(actors == null)
+                return NotFound(new ApiResponse(404));
+
             return Ok(actors);
         }
         [HttpGet("actor/{id}")]
         public async Task<ActionResult<Actor>> GetActor(int id)
         {
             var actor = await _actorRepo.GetByIdAsync(id);
+
+             if(actor == null)
+                return NotFound(new ApiResponse(404));
+
 
             return Ok(actor);
         }
@@ -45,12 +53,18 @@ namespace API.Controllers
         {
             var writers = await _writerRepo.ListAllAsync();
 
+            if(writers == null)
+                return NotFound(new ApiResponse(404));
+
             return Ok(writers);
         }
         [HttpGet("writer/{id}")]
         public async Task<ActionResult<Writer>> GetWriter(int id)
         {
             var writer = await _writerRepo.GetByIdAsync(id);
+            
+            if(writer == null)
+                return NotFound(new ApiResponse(404));
 
             return Ok(writer);
         }
@@ -62,12 +76,18 @@ namespace API.Controllers
         {
             var directors = await _directorRepo.ListAllAsync();
 
+            if(directors == null)
+                return NotFound(new ApiResponse(404));
+
             return Ok(directors);
         }
         [HttpGet("director/{id}")]
         public async Task<ActionResult<Director>> GetDirector(int id)
         {
             var director = await _directorRepo.GetByIdAsync(id);
+
+            if(director == null)
+                return NotFound(new ApiResponse(404));
 
             return Ok(director);
         }

@@ -13,9 +13,6 @@ namespace Infrastructure.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Writer> Writers { get; set; }
         public DbSet<Director> Directors { get; set; }
-        public DbSet<MovieActor> MoviesActors { get; set; }
-        public DbSet<MovieWriter> MoviesWriters { get; set; }
-        public DbSet<MovieDirector> MoviesDrectors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20210325115648_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210331175733_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,28 +20,34 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Actor", b =>
                 {
-                    b.Property<int>("ActorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ActorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Actors");
                 });
 
             modelBuilder.Entity("Core.Entities.Director", b =>
                 {
-                    b.Property<int>("DirectorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("DirectorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Directors");
                 });
@@ -87,7 +93,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("ActorId");
 
-                    b.ToTable("MoviesActors");
+                    b.ToTable("MovieActor");
                 });
 
             modelBuilder.Entity("Core.Entities.MovieDirector", b =>
@@ -102,7 +108,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("DirectorId");
 
-                    b.ToTable("MoviesDrectors");
+                    b.ToTable("MovieDirector");
                 });
 
             modelBuilder.Entity("Core.Entities.MovieWriter", b =>
@@ -117,19 +123,22 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("WriterId");
 
-                    b.ToTable("MoviesWriters");
+                    b.ToTable("MovieWriter");
                 });
 
             modelBuilder.Entity("Core.Entities.Writer", b =>
                 {
-                    b.Property<int>("WriterId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("WriterId");
+                    b.HasKey("Id");
 
                     b.ToTable("Writers");
                 });
@@ -137,13 +146,13 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.MovieActor", b =>
                 {
                     b.HasOne("Core.Entities.Actor", "Actor")
-                        .WithMany("Movies")
+                        .WithMany("MoviesLink")
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Movie", "Movie")
-                        .WithMany("Actors")
+                        .WithMany("ActorsLink")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -156,13 +165,13 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.MovieDirector", b =>
                 {
                     b.HasOne("Core.Entities.Director", "Director")
-                        .WithMany("Movies")
+                        .WithMany("MoviesLink")
                         .HasForeignKey("DirectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Movie", "Movie")
-                        .WithMany("Directors")
+                        .WithMany("DirectorsLink")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -175,13 +184,13 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.MovieWriter", b =>
                 {
                     b.HasOne("Core.Entities.Movie", "Movie")
-                        .WithMany("Writers")
+                        .WithMany("WritersLink")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Writer", "Writer")
-                        .WithMany("Movies")
+                        .WithMany("MoviesLink")
                         .HasForeignKey("WriterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -193,26 +202,26 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Actor", b =>
                 {
-                    b.Navigation("Movies");
+                    b.Navigation("MoviesLink");
                 });
 
             modelBuilder.Entity("Core.Entities.Director", b =>
                 {
-                    b.Navigation("Movies");
+                    b.Navigation("MoviesLink");
                 });
 
             modelBuilder.Entity("Core.Entities.Movie", b =>
                 {
-                    b.Navigation("Actors");
+                    b.Navigation("ActorsLink");
 
-                    b.Navigation("Directors");
+                    b.Navigation("DirectorsLink");
 
-                    b.Navigation("Writers");
+                    b.Navigation("WritersLink");
                 });
 
             modelBuilder.Entity("Core.Entities.Writer", b =>
                 {
-                    b.Navigation("Movies");
+                    b.Navigation("MoviesLink");
                 });
 #pragma warning restore 612, 618
         }

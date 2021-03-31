@@ -1,12 +1,11 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Core.Entities
 {
     public class Actor : Crew 
     {
-        public int ActorId { get; set; }
-        public string Name { get; set; }
-
+        [JsonIgnore]
         public ICollection<MovieActor> MoviesLink { get; set; }
 
     }

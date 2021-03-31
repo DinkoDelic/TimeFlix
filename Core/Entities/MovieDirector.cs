@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Core.Entities
 {
     public class MovieDirector

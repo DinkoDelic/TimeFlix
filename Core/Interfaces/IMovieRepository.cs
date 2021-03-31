@@ -1,22 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using API.DTO;
+using API.Helpers;
 using Core.Entities;
 
 namespace Core.Interfaces
 {
     public interface IMovieRepository
     {
-        Task<List<Movie>> GetAllMoviesAsync();
-        Task<Movie> GetMovieByIdAsync(int id);
-        Task DeleteMovieByIdAsync(int id);
-        Task CreateMovieAsync(Movie m);
-        Task<Movie> UpdateMovieByIdAsync(int id);
-
+        void Add<T>(T entity) where T : class;
+        void Remove<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
-
-        Task<List<Actor>> GetMovieActorsAsync(int id);
-        Task<List<Writer>> GetMovieWritersAsync(int id);
-        Task<List<Director>> GetMovieDirectorsAsync(int id);
+        Task<PaginatedList<MovieDto>> GetAllMoviesAsync(UserParams userParams); 
+        Task<MovieDto> GetMovieByIdAsync(int id);
+                
+        Task<Movie> UpdateMovieByIdAsync(int id);
     }
 }

@@ -31,8 +31,11 @@ namespace API.Middleware
             }
             catch(Exception ex)
             {
+                // logs it in terminal
                 _logger.LogError(ex, ex.Message);
-                context.Response.ContentType = "application/json";                
+
+                context.Response.ContentType = "application/json";     
+                           
                 // sets the status code to 500
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 

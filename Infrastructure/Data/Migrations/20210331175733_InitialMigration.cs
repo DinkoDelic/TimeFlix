@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,26 +11,28 @@ namespace Infrastructure.Data.Migrations
                 name: "Actors",
                 columns: table => new
                 {
-                    ActorId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actors", x => x.ActorId);
+                    table.PrimaryKey("PK_Actors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Directors",
                 columns: table => new
                 {
-                    DirectorId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Directors", x => x.DirectorId);
+                    table.PrimaryKey("PK_Directors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,17 +57,18 @@ namespace Infrastructure.Data.Migrations
                 name: "Writers",
                 columns: table => new
                 {
-                    WriterId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Writers", x => x.WriterId);
+                    table.PrimaryKey("PK_Writers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MoviesActors",
+                name: "MovieActor",
                 columns: table => new
                 {
                     MovieId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -73,15 +76,15 @@ namespace Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoviesActors", x => new { x.MovieId, x.ActorId });
+                    table.PrimaryKey("PK_MovieActor", x => new { x.MovieId, x.ActorId });
                     table.ForeignKey(
-                        name: "FK_MoviesActors_Actors_ActorId",
+                        name: "FK_MovieActor_Actors_ActorId",
                         column: x => x.ActorId,
                         principalTable: "Actors",
-                        principalColumn: "ActorId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MoviesActors_Movies_MovieId",
+                        name: "FK_MovieActor_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "MovieId",
@@ -89,7 +92,7 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MoviesDrectors",
+                name: "MovieDirector",
                 columns: table => new
                 {
                     MovieId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -97,15 +100,15 @@ namespace Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoviesDrectors", x => new { x.MovieId, x.DirectorId });
+                    table.PrimaryKey("PK_MovieDirector", x => new { x.MovieId, x.DirectorId });
                     table.ForeignKey(
-                        name: "FK_MoviesDrectors_Directors_DirectorId",
+                        name: "FK_MovieDirector_Directors_DirectorId",
                         column: x => x.DirectorId,
                         principalTable: "Directors",
-                        principalColumn: "DirectorId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MoviesDrectors_Movies_MovieId",
+                        name: "FK_MovieDirector_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "MovieId",
@@ -113,7 +116,7 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MoviesWriters",
+                name: "MovieWriter",
                 columns: table => new
                 {
                     MovieId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -121,47 +124,47 @@ namespace Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoviesWriters", x => new { x.MovieId, x.WriterId });
+                    table.PrimaryKey("PK_MovieWriter", x => new { x.MovieId, x.WriterId });
                     table.ForeignKey(
-                        name: "FK_MoviesWriters_Movies_MovieId",
+                        name: "FK_MovieWriter_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "MovieId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MoviesWriters_Writers_WriterId",
+                        name: "FK_MovieWriter_Writers_WriterId",
                         column: x => x.WriterId,
                         principalTable: "Writers",
-                        principalColumn: "WriterId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MoviesActors_ActorId",
-                table: "MoviesActors",
+                name: "IX_MovieActor_ActorId",
+                table: "MovieActor",
                 column: "ActorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MoviesDrectors_DirectorId",
-                table: "MoviesDrectors",
+                name: "IX_MovieDirector_DirectorId",
+                table: "MovieDirector",
                 column: "DirectorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MoviesWriters_WriterId",
-                table: "MoviesWriters",
+                name: "IX_MovieWriter_WriterId",
+                table: "MovieWriter",
                 column: "WriterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MoviesActors");
+                name: "MovieActor");
 
             migrationBuilder.DropTable(
-                name: "MoviesDrectors");
+                name: "MovieDirector");
 
             migrationBuilder.DropTable(
-                name: "MoviesWriters");
+                name: "MovieWriter");
 
             migrationBuilder.DropTable(
                 name: "Actors");

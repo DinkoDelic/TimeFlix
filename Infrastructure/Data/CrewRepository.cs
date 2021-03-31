@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
@@ -14,7 +15,7 @@ namespace Infrastructure.Data
             _movieContext = movieContext;
         }
 
-        public async Task<IReadOnlyList<T>> ListAllAsync()
+        public async Task<List<T>> ListAllAsync()
         {
             return await _movieContext.Set<T>().ToListAsync();
         }
@@ -22,6 +23,11 @@ namespace Infrastructure.Data
         public async Task<T> GetByIdAsync(int id)
         {
             return await _movieContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<List<T>> GetByNameAsync(string name)
+        {
+            return await _movieContext.Set<T>().Where(x => x.Name.ToLower().Contains(name.ToLower())).ToListAsync();
         }
 
     }
