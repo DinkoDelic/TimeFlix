@@ -23,7 +23,7 @@ namespace API.Helpers
         public List<MovieDto> MapMovieToMovieDtoList(List<Movie> movies)
         {
             var moviesToReturn = new List<MovieDto>();
-
+            
             foreach (Movie m in movies)
             {
                 moviesToReturn.Add(new MovieDto

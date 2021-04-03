@@ -15,30 +15,28 @@ namespace API.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieRepository _movieRepo;
-        private readonly ICrewRepository<Actor> _actorRepo;
-        private readonly ICrewRepository<Writer> _writerRepo;
-        private readonly ICrewRepository<Director> _directorRepo;
         private readonly Mapper _mapper;
 
-        public MovieController(IMovieRepository movieRepo, ICrewRepository<Actor> actorRepo, ICrewRepository<Writer> writerRepo, ICrewRepository<Director> directorRepo,
-        Mapper mapper)
+        public MovieController(IMovieRepository movieRepo, Mapper mapper)
         {
             _mapper = mapper;
-            _directorRepo = directorRepo;
-            _writerRepo = writerRepo;
-            _actorRepo = actorRepo;
             _movieRepo = movieRepo;
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedList<MovieDto>>> GetMovies([FromQuery]UserParams userParams)
+        public async Task<ActionResult<Pagination<MovieDto>>> GetMovies([FromQuery]UserParams userParams)
         {
             var movies = await _movieRepo.GetAllMoviesAsync(userParams);
 
              if (movies == null)
                 return NotFound(new ApiResponse(404));
+            
+            var moviesToReturn = _mapper.MapMovieToMovieDtoList(movies);
+
+            // Used to determine total amount of pages
+            int movieCount = await _movieRepo.GetTotalMovieCount();
            
-            return Ok(movies);
+            return Ok(new Pagination<MovieDto>(moviesToReturn, userParams.CurrentPage, movieCount, userParams.Offset));
         }
 
         [HttpGet("{id}", Name = "GetMovie")]
@@ -49,7 +47,9 @@ namespace API.Controllers
             if (movie == null)
                 return NotFound(new ApiResponse(404));
 
-            return Ok(movie);
+            var movieToReturn =  _mapper.MapMovieToMovieDtoList(new List<Movie>{movie}).First();    
+
+            return Ok(movieToReturn);
         }
 
         [HttpPost]
@@ -59,10 +59,10 @@ namespace API.Controllers
            
             _movieRepo.Add(createdMovie);
 
-            var movieToReturn = _mapper.MapMovieToMovieDtoList(new List<Movie>() {createdMovie});
+            movieToCreate.MovieId = createdMovie.MovieId;
 
             if (await _movieRepo.SaveChangesAsync())
-                return CreatedAtRoute("GetMovie", new { controller = "Movie", id = createdMovie.MovieId }, movieToReturn);
+                return CreatedAtRoute("GetMovie", new { controller = "Movie", id = createdMovie.MovieId }, movieToCreate);
 
             return BadRequest("Failed to create movie");
         }

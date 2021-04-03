@@ -4,21 +4,20 @@ using System.Linq;
 
 namespace API.Helpers
 {
-    public class PaginatedList<T> : List<T>
+    public class Pagination<T> where T:class
     {
-        public PaginatedList(IEnumerable<T> items, int currentPage, int itemCount, int offset)
+        public Pagination(IReadOnlyList<T> items, int currentPage, int itemCount, int offset)
         {
             CurrentPage = currentPage;
             // returs total amount of pages rounded up.
             TotalPages =(int) Math.Ceiling(itemCount / (decimal) offset);
-            ItemCount = itemCount;
             Offset = offset;
-            AddRange(items);
+            Data = items;
         }
 
         public int CurrentPage { get; }
         public int TotalPages { get; }
-        public int ItemCount { get; }
         public int Offset { get; }
+        public IReadOnlyList<T> Data { get; set; }
     }
 }

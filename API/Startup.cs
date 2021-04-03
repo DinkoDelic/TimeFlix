@@ -54,6 +54,7 @@ namespace API
             services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddScoped(typeof(ICrewRepository<>),(typeof(CrewRepository<>)));
             services.AddScoped<Mapper>();
+            
 
             // Using sqlite as db choice 
             services.AddDbContext<MovieContext>(x =>
@@ -63,6 +64,8 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +86,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthorization();
 
