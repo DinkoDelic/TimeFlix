@@ -1,0 +1,21 @@
+<div class="d-flex w-100 justify-content-between">
+  <div class="d-inline">
+    <div class="d-block">
+      <h5 class="d-inline mb-1">{{ movie.title }}</h5>
+      <p class="d-inline ml-2">({{ movie.releaseDate | date }})</p>
+    </div>
+    <p class="d-block">{{ movie.genre }}</p>
+  </div>
+  <div class="d-inline" style="min-width: 150px">
+    <button
+      routerLink="{{ movie.movieId }}"
+      type="button"
+      mdbBtn
+      color="info"
+      size="sm"
+      mdbWavesEffect
+    >
+      View<mdb-icon fas icon="eye" class="ml-1"></mdb-icon>
+    </button>
+  </div>
+</div>

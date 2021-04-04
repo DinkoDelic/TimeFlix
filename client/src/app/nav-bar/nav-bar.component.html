@@ -1,0 +1,71 @@
+<div class="container">
+  <!--Navbar-->
+  <mdb-navbar
+    SideClass="navbar navbar-expand-lg navbar-dark cyan"
+    [containerInside]="false"
+  >
+    
+      <!-- Navbar brand -->
+      <mdb-navbar-brand
+        ><a class="navbar-brand yellow-text" href="#"
+        routerLink="/"
+          >TimeFlix</a
+        ></mdb-navbar-brand
+      >
+     
+      <!-- Collapsible content -->
+      <links>
+        <!-- Links -->
+        <form class="form-inline waves-light" mdbWavesEffect>
+          <div class="md-form my-0">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search for">
+          </div>
+          <select class="browser-default custom-select">
+            <option *ngFor="let option of Options" value={{option.value}}>{{option.label}}</option>
+          </select>
+      </form>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link waves-light" mdbWavesEffect
+            routerLink="movie"
+              ><mdb-icon fas icon="film" class="yellow-text"></mdb-icon>
+              Movies<span class="sr-only">(current)</span></a
+            >
+          </li>
+          <!-- Dropdown -->
+          <li class="nav-item dropdown" dropdown>
+            <a
+              dropdownToggle
+              mdbWavesEffect
+              type="button"
+              class="nav-link dropdown-toggle waves-light"
+              mdbWavesEffect
+            >
+              <mdb-icon fas icon="user" class="yellow-text"></mdb-icon>
+              Crew<span class="caret"></span
+            ></a>
+            <div
+              *dropdownMenu
+              class="dropdown-menu dropdown-menu-right dropdown dropdown-primary"
+              role="menu"
+            >
+              <a class="dropdown-item waves-light" mdbWavesEffect href="#"
+                >Actors</a
+              >
+              <a class="dropdown-item waves-light" mdbWavesEffect href="#"
+                >Writers</a
+              >
+              <a class="dropdown-item waves-light" mdbWavesEffect href="#"
+                >Directors</a
+              >
+            </div>
+          </li>
+        </ul>
+        <!-- Links -->
+      </links>
+      <!-- Collapsible content -->
+    
+  </mdb-navbar>
+
+  <!--/.Navbar-->
+</div>

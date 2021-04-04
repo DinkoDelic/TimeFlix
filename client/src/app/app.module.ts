@@ -1,21 +1,31 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NbThemeModule } from '@nebular/theme';
 import { HttpClientModule } from '@angular/common/http';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MovieComponent } from './movie/movie.component';
+import { MovieListComponent } from './movie/movie-list/movie-list.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { MovieCardComponent } from './movie/movie-card/movie-card.component';
+import { MovieDetailedComponent } from './movie/movie-detailed/movie-detailed.component';
+import { HomeComponent } from './home/home.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    MovieComponent
+    NavBarComponent,
+    NavBarComponent,
+    MovieListComponent,
+    MovieCardComponent,
+    MovieDetailedComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NbThemeModule.forRoot(),
+    MDBBootstrapModule.forRoot(),
     HttpClientModule
   ],
   providers: [
