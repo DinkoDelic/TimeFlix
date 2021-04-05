@@ -8,6 +8,8 @@ namespace Core.Interfaces
     {
         Task<T> GetByIdAsync(int id);
         Task<List<T>> ListAllAsync();
-        Task<List<T>> GetByNameAsync(string name);
+        Task<List<T>> ListByNameAsync(string name);
+
+        Task<T> FindByName(string name);
     }
 }

@@ -35,26 +35,25 @@ namespace Infrastructure.Data
 
         public async Task<List<Movie>> GetAllMoviesAsync(UserParams userParams)
         {
-
             var movies = await _movieContext.Movies
-                // Includes actors from movie in ActorsLink collection
-                .Include(m => m.ActorsLink)
-                .ThenInclude(a => a.Actor)
-                // Includes directors from movie in DirectorsLink collection
-                .Include(m => m.DirectorsLink)
-                .ThenInclude(d => d.Director)
-                // Includes writers from movie in WritersLink collection
-                .Include(m => m.WritersLink)
-                .ThenInclude(w => w.Writer)
                 .OrderBy(m => m.Title)
                 // Implementing pagination parameters with .Skip and .Take
                 .Skip((userParams.CurrentPage - 1) * userParams.Offset)
                 .Take(userParams.Offset)
-                // Query data from multiple collections as individual queries for better performance
-                // Doing it as a single query will give us a warning about potential performance hit
-                .AsSplitQuery()
                 .ToListAsync();
 
+            return movies;
+        }
+
+          public async Task<List<Movie>> SearchMoviesByNameAsync(UserParams userParams)
+        {
+             var movies = await _movieContext.Movies
+                .Where(m => m.Title.ToLower().Contains(userParams.nameFilter.ToLower()))
+                .OrderBy(m => m.Title)
+                // Implementing pagination parameters with .Skip and .Take
+                .Skip((userParams.CurrentPage - 1) * userParams.Offset)
+                .Take(userParams.Offset)
+                .ToListAsync();
 
             return movies;
         }
@@ -69,6 +68,8 @@ namespace Infrastructure.Data
                 .Include(m => m.WritersLink)
                 .ThenInclude(w => w.Writer)
                 .OrderBy(m => m.Title)
+                // Query data from multiple collections as individual queries for better performance
+                // Doing it as a single query will give us a warning about potential performance hit
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(m => m.MovieId == id);
             
@@ -80,9 +81,14 @@ namespace Infrastructure.Data
             throw new System.NotImplementedException();
         }
 
-        public async Task<int> GetTotalMovieCount()
+        public async Task<int> GetTotalMovieCount(UserParams userParams)
         {
-            return await _movieContext.Movies.CountAsync();
+            if(userParams.nameFilter != null)
+                return await _movieContext.Movies
+                    .Where(m => m.Title.ToLower().Contains(userParams.nameFilter.ToLower()))
+                    .CountAsync();
+            else
+                 return await _movieContext.Movies.CountAsync();
         }
 
     }

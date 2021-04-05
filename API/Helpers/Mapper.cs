@@ -35,9 +35,10 @@ namespace API.Helpers
                     AgeRating = m.AgeRating,
                     ReleaseDate = m.ReleaseDate,
                     Duration = m.Duration,
-                    Actors = m.ActorsLink.Select(a => a.Actor).ToList(),
-                    Writers = m.WritersLink.Select(w => w.Writer).ToList(),
-                    Directors = m.DirectorsLink.Select(d => d.Director).ToList()
+                    // Check to see if the lists are included, if not assign null to property
+                    Actors = m.ActorsLink != null ? m.ActorsLink.Select(a => a.Actor).ToList() : null,
+                    Writers = m.WritersLink != null ? m.WritersLink.Select(w => w.Writer).ToList() : null,
+                    Directors = m.DirectorsLink != null ? m.DirectorsLink.Select(d => d.Director).ToList() : null
                 });
             }
            
@@ -62,7 +63,8 @@ namespace API.Helpers
                  writersList.Add(new MovieWriter
                 {
                     Movie = createdMovie,
-                    Writer = await _writerRepo.GetByIdAsync(w.Id) ?? new Writer { Name = w.Name.Trim() }
+                    // Look if the writer with the same name is in db, if not create a new writer
+                    Writer = await _writerRepo.FindByName(w.Name) ?? new Writer { Name = w.Name.Trim() }
                 });
             }
             createdMovie.WritersLink = writersList;
@@ -73,7 +75,7 @@ namespace API.Helpers
                  actorList.Add(new MovieActor
                 {
                     Movie = createdMovie,
-                    Actor = await _actorRepo.GetByIdAsync(a.Id) ?? new Actor { Name = a.Name.Trim() }
+                    Actor = await _actorRepo.FindByName(a.Name) ?? new Actor { Name = a.Name.Trim() }
                 });
             }
             createdMovie.ActorsLink = actorList;
@@ -84,7 +86,7 @@ namespace API.Helpers
                 directorList.Add(new MovieDirector
                 {
                     Movie = createdMovie,
-                    Director = await _directorRepo.GetByIdAsync(d.Id) ?? new Director { Name = d.Name.Trim() }
+                    Director = await _directorRepo.FindByName(d.Name) ?? new Director { Name = d.Name.Trim() }
                 });
             }
             createdMovie.DirectorsLink = directorList;

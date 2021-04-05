@@ -13,8 +13,8 @@ namespace API.DTO
         public string AgeRating { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int Duration { get; set; }
-        public IReadOnlyList<Writer> Writers { get; set; }
-        public IReadOnlyList<Actor> Actors { get; set; }  
-        public IReadOnlyList<Director> Directors { get; set; } 
+        public IReadOnlyList<Writer> Writers { get; set; } = null;
+        public IReadOnlyList<Actor> Actors { get; set; }  = null;
+        public IReadOnlyList<Director> Directors { get; set; } = null;
     }
 }

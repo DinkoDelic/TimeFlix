@@ -4,7 +4,7 @@ import { IMovie } from 'src/app/_models/IMovie';
 @Component({
   selector: 'app-movie-card',
   templateUrl: './movie-card.component.html',
-  styleUrls: ['./movie-card.component.sass']
+  styleUrls: ['./movie-card.component.scss']
 })
 export class MovieCardComponent implements OnInit {
   @Input() movie: IMovie;

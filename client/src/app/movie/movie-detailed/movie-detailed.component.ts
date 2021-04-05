@@ -6,7 +6,7 @@ import { MovieService } from 'src/app/_services/movie.service';
 @Component({
   selector: 'app-movie-detailed',
   templateUrl: './movie-detailed.component.html',
-  styleUrls: ['./movie-detailed.component.sass']
+  styleUrls: ['./movie-detailed.component.scss']
 })
 export class MovieDetailedComponent implements OnInit {
   movie: IMovie;

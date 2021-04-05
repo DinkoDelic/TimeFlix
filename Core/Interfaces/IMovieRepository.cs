@@ -15,6 +15,7 @@ namespace Core.Interfaces
         Task<Movie> GetMovieByIdAsync(int id);
                 
         Task<Movie> UpdateMovieByIdAsync(int id);
-        Task<int> GetTotalMovieCount();
+        Task<List<Movie>> SearchMoviesByNameAsync(UserParams userParams);
+        Task<int> GetTotalMovieCount(UserParams userParams);
     }
 }

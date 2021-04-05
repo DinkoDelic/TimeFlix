@@ -1,16 +1,68 @@
 <div class="container">
-  <div class="m-3">
+  <!-- ng-If checks if movies are loaded before rendering template, otherwise we get a console error -->
+  <div class="m-3" *ngIf="movies">
     <h2 class="d-block">Movies</h2>
-    <small class="d-block"
-      >Showing {{ offset }} out of {{ itemCount }} results</small
+    <!-- Search -->
+    <div class="d-flex justify-content-between">
+      <input
+        #search
+        class="d-inline form-control"
+        type="text"
+        (keyup.enter)="onSearch()"
+        placeholder="Search"
+        style="width: 50%"
+      />
+      <div class="d-inline mr-1" style="padding: 0">
+        <button
+          class="d-inline btn btn-outline-primary btn-sm find-btn"
+          (click)="onSearch()"
+          style="width: 40px"
+        >
+          <i class="fa fa-search"></i>
+        </button>
+        <button
+          class="d-inline btn btn-outline-success btn-sm ml-3 chancel-btn"
+          (click)="onReset()"
+          style="width: 40px"
+        >
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <small class="d-block ml-1 mt-2"
+      >Showing {{ movies.length }} out of {{ itemCount }} results</small
     >
+    <button
+    class="d-inline btn btn-outline-primary btn-sm"
+    style="width: 40px"
+    routerLink="/create"
+  >
+    Add new
+  </button>
   </div>
   <div class="list-group">
+    <!-- Passing movie object to child movie-card component -->
     <div
       class="list-group-item list-group-item-action flex-column align-items-start"
       *ngFor="let movie of movies"
     >
       <app-movie-card [movie]="movie"></app-movie-card>
     </div>
+  </div>
+  
+  <!-- pagination -->
+  <div class="d-flex justify-content-center pt-3">
+    <pagination
+      *ngIf="this.itemCount > this.userParam.offset"
+      (pageChanged)="pageChanged($event)"
+      [itemsPerPage]="userParam.offset"
+      [boundaryLinks]="true"
+      [totalItems]="this.itemCount"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
   </div>
 </div>

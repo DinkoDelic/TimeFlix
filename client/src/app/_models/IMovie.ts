@@ -10,7 +10,7 @@ export interface IMovie {
   ageRating: string;
   releaseDate: string;
   duration: number;
-  writers: IWriter[];
-  actors: IActor[];
-  directors: IDirector[];
+  writers?: IWriter[];
+  actors?: IActor[];
+  directors?: IDirector[];
 }

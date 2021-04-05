@@ -24,18 +24,29 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Pagination<MovieDto>>> GetMovies([FromQuery]UserParams userParams)
+        public async Task<ActionResult<Pagination<MovieDto>>> GetMovies([FromQuery] UserParams userParams)
         {
-            var movies = await _movieRepo.GetAllMoviesAsync(userParams);
+            var movies = new List<Movie>();
+            // returns search results else returns full movie collection
+            if (userParams.nameFilter != null)
+            {
+                movies = await _movieRepo.SearchMoviesByNameAsync(userParams);
+                
+            }
+            else
+            {
+                movies = await _movieRepo.GetAllMoviesAsync(userParams);   
+            }
 
-             if (movies == null)
+            int movieCount = await _movieRepo.GetTotalMovieCount(userParams);
+
+            if (movies == null)
                 return NotFound(new ApiResponse(404));
-            
+
             var moviesToReturn = _mapper.MapMovieToMovieDtoList(movies);
 
-            // Used to determine total amount of pages
-            int movieCount = await _movieRepo.GetTotalMovieCount();
-           
+
+
             return Ok(new Pagination<MovieDto>(moviesToReturn, userParams.CurrentPage, movieCount, userParams.Offset));
         }
 
@@ -47,7 +58,7 @@ namespace API.Controllers
             if (movie == null)
                 return NotFound(new ApiResponse(404));
 
-            var movieToReturn =  _mapper.MapMovieToMovieDtoList(new List<Movie>{movie}).First();    
+            var movieToReturn = _mapper.MapMovieToMovieDtoList(new List<Movie> { movie }).First();
 
             return Ok(movieToReturn);
         }
@@ -56,7 +67,7 @@ namespace API.Controllers
         public async Task<IActionResult> CreateMovie(MovieDto movieToCreate)
         {
             var createdMovie = await _mapper.MapMovieDtoToMovie(movieToCreate);
-           
+
             _movieRepo.Add(createdMovie);
 
             movieToCreate.MovieId = createdMovie.MovieId;
