@@ -1,0 +1,19 @@
+.main {
+  min-height: 6rem;
+  color: #ffffff;
+}
+.main:hover{
+    background-color:#0d7377;
+}
+.title {
+    font-size: 2rem;
+}
+button {
+    border: 1px solid #14ffec;
+    color: #FFFFFF;
+    min-width: 110px;
+}
+button:hover{
+    background-color: #14ffec;
+    color: #212121;
+}

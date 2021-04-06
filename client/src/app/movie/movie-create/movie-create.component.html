@@ -1,20 +1,54 @@
-<div class="container">
-    <form [formGroup]='myFrom'>
-        <mat-form-field appearance="fill">
-            <mat-label>Input</mat-label>
-            <input matInput>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Select</mat-label>
-            <mat-select>
-              <mat-option value="one">First option</mat-option>
-              <mat-option value="two">Second option</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Textarea</mat-label>
-            <textarea matInput></textarea>
-          </mat-form-field>
-          
-    </form>
+<div class="container" style="color: white">
+  <form [formGroup]="myFrom">
+    <!-- title -->
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        class="form-control"
+        formControlName="title"
+        id="title"
+        placeholder="lord of rings"
+      />
+    </div>
+    <!-- age rating -->
+    <div class="form-group">
+      <label for="ageRating">Age rating</label>
+      <select class="form-control" formControlName="ageRating" id="ageRating">
+        <option>PG-13</option>
+        <option>R</option>
+        <option>E</option>
+        <option>M</option>
+      </select>
+    </div>
+    <!-- release date -->
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="Datepicker"
+        class="form-control"
+        bsDatepicker
+      />
+    </div>
+    <!-- directors -->
+    <div class="d-inline director">
+      <div formArrayName="directors">
+        <label for="Director">Directors</label>
+        <div
+          *ngFor="let director of directorForms.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <input type="name" formControlName="name" id="name" />
+          <button class="btn btn-danger" (click)="deleteDirector(i)">
+            Remove
+          </button>
+        </div>
+      </div>
+      <button class="btn btn-primary" (click)="addDirector()">Add</button>
+    </div>
+    <!-- plot -->
+    <div class="form-group">
+      <label for="storyline">Plot</label>
+      <textarea class="form-control" id="storyline" rows="3"></textarea>
+    </div>
+  </form>
 </div>

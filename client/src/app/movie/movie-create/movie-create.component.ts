@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 
 @Component({
@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class MovieCreateComponent implements OnInit {
   myFrom: FormGroup;
-
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -18,8 +17,27 @@ export class MovieCreateComponent implements OnInit {
       plot: '',
       ageRating: '',
       releaseDate: '',
-      duration: ''
+      duration: '',
+      directors: this.fb.array([]),
+      writers: this.fb.array([]),
+      actors: this.fb.array([])
     });
   }
+
+  get directorForms() {
+    return this.myFrom.get('directors') as FormArray;
+  }
+
+  addDirector() {
+    const director = this.fb.group({
+      name: []
+    });
+
+    this.directorForms.push(director);
+  }
+  deleteDirector(i) {
+    this.directorForms.removeAt(i);
+  }
+
 
 }

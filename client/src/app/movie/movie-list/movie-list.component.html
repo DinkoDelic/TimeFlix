@@ -1,7 +1,17 @@
-<div class="container">
+<div class="container main p-3">
   <!-- ng-If checks if movies are loaded before rendering template, otherwise we get a console error -->
-  <div class="m-3" *ngIf="movies">
-    <h2 class="d-block">Movies</h2>
+  <div class="p-3" *ngIf="movies">
+    <div class="d-flex justify-content-between mb-4">
+      <h2 class="d-inline-block" style="font-size: 2.5rem;">Movies</h2>
+    <button
+      class="d-inline btn mt-3"
+      style="width: 110px"
+      routerLink="create"
+    >
+      Add <i class="fa fa-plus"></i>
+    </button>
+    </div>
+    
     <!-- Search -->
     <div class="d-flex justify-content-between">
       <input
@@ -32,24 +42,13 @@
     <small class="d-block ml-1 mt-2"
       >Showing {{ movies.length }} out of {{ itemCount }} results</small
     >
-    <button
-    class="d-inline btn btn-outline-primary btn-sm"
-    style="width: 40px"
-    routerLink="/create"
-  >
-    Add new
-  </button>
   </div>
-  <div class="list-group">
-    <!-- Passing movie object to child movie-card component -->
-    <div
-      class="list-group-item list-group-item-action flex-column align-items-start"
-      *ngFor="let movie of movies"
-    >
-      <app-movie-card [movie]="movie"></app-movie-card>
-    </div>
+
+  <!-- Passing movie object to child movie-card component -->
+  <div class="container-flex" *ngFor="let movie of movies">
+    <app-movie-card [movie]="movie"></app-movie-card>
   </div>
-  
+
   <!-- pagination -->
   <div class="d-flex justify-content-center pt-3">
     <pagination

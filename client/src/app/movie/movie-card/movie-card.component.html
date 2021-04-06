@@ -1,19 +1,19 @@
-<div class="d-flex w-100 justify-content-between">
+<div class="d-flex p-3 justify-content-between main">
   <div class="d-inline">
     <div class="d-block">
-      <h5 class="d-inline mb-1">{{ movie.title }}</h5>
-      <p class="d-inline ml-2">({{ movie.releaseDate | date }})</p>
+      <h5 class="d-inline-block mb-1 mr-3 title">{{ movie.title }}</h5>
+
+      <p class="d-inline-block text-muted">({{ movie.releaseDate | date }})</p>
     </div>
     <p class="d-block">{{ movie.genre }}</p>
   </div>
   <div class="d-inline">
     <button
       routerLink="{{ movie.movieId }}"
-      class="d-inline btn btn-outline-primary btn-sm find-btn mt-2"
-      style="min-width: 100px;"
+      class="d-inline btn mt-4"
       mdbWavesEffect
     >
-      View<mdb-icon fas icon="eye" class="ml-1"></mdb-icon>
+      View <i class="fa fa-eye"></i>
     </button>
   </div>
 </div>

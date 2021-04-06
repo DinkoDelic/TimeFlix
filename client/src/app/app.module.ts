@@ -7,9 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MovieCreateComponent } from './movie/movie-create/movie-create.component';
 import { AppRoutingModule } from './app-routing.module';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AppComponent } from './app.component';
 import { MovieListComponent } from './movie/movie-list/movie-list.component';
@@ -39,9 +37,7 @@ import { HomeComponent } from './home/home.component';
     PaginationModule.forRoot(),
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule
+    BsDatepickerModule.forRoot()
   ],
   providers: [
   ],

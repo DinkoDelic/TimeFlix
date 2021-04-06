@@ -8,8 +8,8 @@ export interface IMovie {
   genre: string;
   storyline: string;
   ageRating: string;
-  releaseDate: string;
-  duration: number;
+  releaseDate: Date;
+  duration: Date;
   writers?: IWriter[];
   actors?: IActor[];
   directors?: IDirector[];

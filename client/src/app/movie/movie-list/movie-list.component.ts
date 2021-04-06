@@ -37,7 +37,7 @@ export class MovieListComponent implements OnInit {
 
   onSearch(){
     this.userParam.nameFilter = this.searchTerm.nativeElement.value;
-    console.log(this.userParam.nameFilter);
+    this.userParam.currentPage = 1;
     this.getMovies();
   }
   onReset(){

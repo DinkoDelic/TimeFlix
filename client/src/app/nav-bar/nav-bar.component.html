@@ -1,62 +1,56 @@
-<div class="container">
+<div class="container-flex navigation">
   <!--Navbar-->
-  <mdb-navbar
-    SideClass="navbar navbar-expand-lg navbar-dark cyan"
-    [containerInside]="false"
-  >
-    
-      <!-- Navbar brand -->
-      <mdb-navbar-brand
-        ><a class="navbar-brand yellow-text" href="#"
-        routerLink="/"
-          >TimeFlix</a
-        ></mdb-navbar-brand
-      >
-     
-      <!-- Collapsible content -->
-      <links>
-        <!-- Links -->
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link waves-light" mdbWavesEffect
-            routerLink="movie"
-              ><mdb-icon fas icon="film" class="yellow-text"></mdb-icon>
-              Movies<span class="sr-only">(current)</span></a
+  <mdb-navbar SideClass="navbar navbar-3 navbar-expand-lg" [containerInside]="false">
+    <!-- Navbar brand -->
+    <mdb-navbar-brand
+      ><a class="navbar-brand text-white" href="#" routerLink="/"
+        >TimeFlix</a
+      ></mdb-navbar-brand
+    >
+
+    <!-- Collapsible content -->
+    <links>
+      <!-- Links -->
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link waves-light" style="color: #fff;" mdbWavesEffect routerLink="movies"
+            ><mdb-icon fas icon="film"></mdb-icon> Movies<span class="sr-only"
+              >(current)</span
+            ></a
+          >
+        </li>
+        <!-- Dropdown -->
+        <li class="nav-item dropdown" dropdown>
+          <a
+            dropdownToggle
+            mdbWavesEffect
+            type="button"
+            class="nav-link dropdown-toggle waves-light"
+            mdbWavesEffect
+          >
+            <mdb-icon fas icon="user" class="yellow-text"></mdb-icon>
+            Crew<span class="caret"></span
+          ></a>
+          <div
+            *dropdownMenu
+            class="dropdown-menu dropdown-menu-right dropdown dropdown-primary"
+            role="menu"
+          >
+            <a class="dropdown-item waves-light" mdbWavesEffect href="#"
+              >Actors</a
             >
-          </li>
-          <!-- Dropdown -->
-          <li class="nav-item dropdown" dropdown>
-            <a
-              dropdownToggle
-              mdbWavesEffect
-              type="button"
-              class="nav-link dropdown-toggle waves-light"
-              mdbWavesEffect
+            <a class="dropdown-item waves-light" mdbWavesEffect href="#"
+              >Writers</a
             >
-              <mdb-icon fas icon="user" class="yellow-text"></mdb-icon>
-              Crew<span class="caret"></span
-            ></a>
-            <div
-              *dropdownMenu
-              class="dropdown-menu dropdown-menu-right dropdown dropdown-primary"
-              role="menu"
+            <a class="dropdown-item waves-light" mdbWavesEffect href="#"
+              >Directors</a
             >
-              <a class="dropdown-item waves-light" mdbWavesEffect href="#"
-                >Actors</a
-              >
-              <a class="dropdown-item waves-light" mdbWavesEffect href="#"
-                >Writers</a
-              >
-              <a class="dropdown-item waves-light" mdbWavesEffect href="#"
-                >Directors</a
-              >
-            </div>
-          </li>
-        </ul>
-        <!-- Links -->
-      </links>
-      <!-- Collapsible content -->
-    
+          </div>
+        </li>
+      </ul>
+      <!-- Links -->
+    </links>
+    <!-- Collapsible content -->
   </mdb-navbar>
 
   <!--/.Navbar-->

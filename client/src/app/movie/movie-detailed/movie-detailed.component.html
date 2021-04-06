@@ -1,97 +1,75 @@
-<div class="container" *ngIf="movie">
-  <div class="m-3">
-    <h3 class="d-inline-block mr-2">{{ movie.title }}</h3>
-    <small class="d-inline-block">{{ movie.ageRating }}</small>
+<div class="container p-3 main" *ngIf="movie">
+  <h2 class="d-inline-block my-3 mr-2">{{ movie.title }}</h2>
+  <small class="d-inline-block" style="color:  #14ffec;">{{ movie.ageRating }}</small>
 
-    <p class="mt-2">{{ movie.storyline }}</p>
-    <small class="d-inline-block mr-2 text-muted"
-      >Duration: {{ movie.duration }} minutes</small
+  <p class="mt-2" style="font-size: 1.2rem;">{{ movie.storyline }}</p>
+  <small class="d-inline-block mr-2 text-muted"
+    >Duration: {{ movie.duration }} minutes</small
+  >
+  <small class="d-inline-block text-muted"
+    >Release date: {{ movie.releaseDate | date }}</small
+  >
+  <!-- Genre -->
+  <div class="d-block">
+    <h4 class="d-block mt-3 text-muted">Genre:</h4>
+    <ul class="d-inline list-group list-group-horizontal-md">
+      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+        Action
+      </li>
+      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+        Drama
+      </li>
+      <li class="d-inline-block mr-2 ml-1" style="border: 0; padding: 0">
+        Fantasy
+      </li>
+    </ul>
+  </div>
+
+  <!-- Directors -->
+  <div class="d-block">
+    <h4 class="d-block mt-3 text-muted">Directors:</h4>
+    <ul
+      class="d-inline list-group list-group-horizontal-md ml-1"
+      *ngFor="let director of movie.directors"
     >
-    <small class="d-inline-block text-muted"
-      >Release date: {{ movie.releaseDate | date }}</small
+      <li class="mr-3 d-inline-block" style="border: 0; padding: 0">
+        {{ director.name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Writers -->
+  <div class="d-block">
+    <h4 class="d-block mt-3 text-muted">Writers:</h4>
+    <ul
+      class="d-inline list-group list-group-horizontal-md"
+      *ngFor="let writer of movie.writers"
     >
-    <!-- Genre -->
-    <div class="d-block">
-      <h4 class="d-block mt-3">Genre:</h4>
-      <ul class="d-inline list-group list-group-horizontal-md">
-        <li
-          class="list-group-item mr-2 ml-1 d-inline-block"
-          style="border: 0; padding: 0"
-        >
-          Action
-        </li>
-        <li
-          class="list-group-item mr-2 ml-1 d-inline-block"
-          style="border: 0; padding: 0"
-        >
-          Drama
-        </li>
-        <li
-          class="list-group-item d-inline-block mr-2 ml-1"
-          style="border: 0; padding: 0"
-        >
-          Fantasy
-        </li>
-      </ul>
-    </div>
+      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+        {{ writer.name }}
+      </li>
+    </ul>
+  </div>
 
-    <!-- Directors -->
-    <div class="d-block">
-      <h4 class="d-block mt-3">Directors:</h4>
-      <ul
-        class="d-inline list-group list-group-horizontal-md ml-1"
-        *ngFor="let director of movie.directors"
-      >
-        <li class="list-group-item mr-3 d-inline" style="border: 0; padding: 0">
-          {{ director.name }}
-        </li>
-      </ul>
-    </div>
-
-    <!-- Writers -->
-    <div class="d-block">
-      <h4 class="d-block mt-3">Writers:</h4>
-      <ul
-        class="d-inline list-group list-group-horizontal-md"
-        *ngFor="let writer of movie.writers"
-      >
-        <li
-          class="list-group-item mr-2 ml-1 d-inline"
-          style="border: 0; padding: 0"
-        >
-          {{ writer.name }}
-        </li>
-      </ul>
-    </div>
-
-    <!-- Actors -->
-    <div class="d-block">
-      <h4 class="d-block mt-3">Actors:</h4>
-      <ul
-        class="d-inline list-group list-group-horizontal-md"
-        *ngFor="let actor of movie.actors"
-      >
-        <li
-          class="list-group-item mr-2 ml-1 d-inline"
-          style="border: 0; padding: 0"
-        >
-          {{ actor.name }}
-        </li>
-      </ul>
-    </div>
-    <div class="d-flex float-right mt-2">
-      <button
-        class="d-inline btn btn-outline-info btn-lg mr-3"
-        mdbWavesEffect
-      >
-        Edit
-      </button>
-      <button
-        class="d-inline btn btn-outline-danger btn-lg"
-        mdbWavesEffect
-      >
-        Delete
-      </button>
-    </div>
+  <!-- Actors -->
+  <div class="d-block">
+    <h4 class="d-block mt-3 text-muted">Actors:</h4>
+    <ul
+      class="d-inline list-group list-group-horizontal-md"
+      *ngFor="let actor of movie.actors"
+    >
+      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+        {{ actor.name }}
+      </li>
+    </ul>
+  </div>
+  <!-- edit and delete -->
+  <div class="d-flex justify-content-end mt-2">
+    <button class="d-inline btn btn-outline-info btn-lg mr-3" mdbWavesEffect>
+      Edit
+    </button>
+    <button class="d-inline btn btn-outline-danger btn-lg" mdbWavesEffect>
+      Delete
+    </button>
   </div>
 </div>

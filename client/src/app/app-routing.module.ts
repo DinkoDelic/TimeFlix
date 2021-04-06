@@ -8,9 +8,10 @@ import { MovieListComponent } from './movie/movie-list/movie-list.component';
 // routing to our various components
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'movie', component: MovieListComponent},
-  {path: 'movie/:movieid', component: MovieDetailedComponent},
-  {path: 'movie/create', component: MovieCreateComponent},
+  {path: 'movies', component: MovieListComponent},
+  {path: 'movies/create', component: MovieCreateComponent},
+  {path: 'movies/:movieid', component: MovieDetailedComponent},
+ 
   // non existing paths get redirected to home page
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
