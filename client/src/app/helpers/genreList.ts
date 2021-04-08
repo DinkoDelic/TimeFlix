@@ -1,0 +1,28 @@
+export class GenreList {
+  list: string[] = [
+    'Action',
+    'Adventure',
+    'Animation',
+    'Biography',
+    'Comedy',
+    'Crime',
+    'Documentary',
+    'Drama',
+    'Family',
+    'Fantasy',
+    'FilmNoir',
+    'History',
+    'Horror',
+    'Music',
+    'Musical',
+    'Mystery',
+    'Romance',
+    'SciFi',
+    'Short',
+    'Sport',
+    'Superhero',
+    'Thriller',
+    'War',
+    'Western',
+  ];
+}

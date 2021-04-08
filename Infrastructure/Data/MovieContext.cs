@@ -16,6 +16,7 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
            //Defining many-to-many movie-actor relationship
             modelBuilder.Entity<MovieActor>()             
             .HasKey(x => new {x.MovieId , x.ActorId});

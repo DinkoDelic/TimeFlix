@@ -3,14 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { MovieCreateComponent } from './movie/movie-create/movie-create.component';
 import { MovieDetailedComponent } from './movie/movie-detailed/movie-detailed.component';
+import { MovieEditComponent } from './movie/movie-edit/movie-edit.component';
 import { MovieListComponent } from './movie/movie-list/movie-list.component';
 
 // routing to our various components
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'movie', component: MovieListComponent},
-  {path: 'movie/:movieid', component: MovieDetailedComponent},
-  {path: 'movie/create', component: MovieCreateComponent},
+  {path: 'movies', component: MovieListComponent},
+  {path: 'movies/create', component: MovieCreateComponent},
+  {path: 'movies/:movieid', component: MovieDetailedComponent},
+  {path: 'movies/:movieid/edit', component: MovieEditComponent},
+ 
+
   // non existing paths get redirected to home page
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];

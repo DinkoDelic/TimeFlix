@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NbLayoutModule } from '@nebular/theme';
 
 @Component({
   selector: 'app-root',
