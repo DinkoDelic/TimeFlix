@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure.Data.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20210331175733_InitialMigration")]
+    [Migration("20210408105607_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,23 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Directors");
                 });
 
+            modelBuilder.Entity("Core.Entities.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genres");
+                });
+
             modelBuilder.Entity("Core.Entities.Movie", b =>
                 {
                     b.Property<int>("MovieId")
@@ -64,13 +81,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Genre")
+                    b.Property<string>("Plot")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Storyline")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -109,6 +123,21 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("DirectorId");
 
                     b.ToTable("MovieDirector");
+                });
+
+            modelBuilder.Entity("Core.Entities.MovieGenre", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("MovieId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("MovieGenre");
                 });
 
             modelBuilder.Entity("Core.Entities.MovieWriter", b =>
@@ -181,6 +210,25 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Movie");
                 });
 
+            modelBuilder.Entity("Core.Entities.MovieGenre", b =>
+                {
+                    b.HasOne("Core.Entities.Genre", "Genre")
+                        .WithMany("MoviesLink")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Movie", "Movie")
+                        .WithMany("GenresLink")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genre");
+
+                    b.Navigation("Movie");
+                });
+
             modelBuilder.Entity("Core.Entities.MovieWriter", b =>
                 {
                     b.HasOne("Core.Entities.Movie", "Movie")
@@ -210,11 +258,18 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("MoviesLink");
                 });
 
+            modelBuilder.Entity("Core.Entities.Genre", b =>
+                {
+                    b.Navigation("MoviesLink");
+                });
+
             modelBuilder.Entity("Core.Entities.Movie", b =>
                 {
                     b.Navigation("ActorsLink");
 
                     b.Navigation("DirectorsLink");
+
+                    b.Navigation("GenresLink");
 
                     b.Navigation("WritersLink");
                 });

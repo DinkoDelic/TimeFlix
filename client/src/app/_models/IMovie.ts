@@ -6,7 +6,7 @@ import { IWriter } from './IWriter';
 export interface IMovie {
   movieId: number;
   title: string;
-  genre?: IGenre[];
+  genres?: IGenre[];
   plot: string;
   ageRating: string;
   releaseDate: Date;

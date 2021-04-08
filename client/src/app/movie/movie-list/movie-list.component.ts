@@ -14,7 +14,7 @@ export class MovieListComponent implements OnInit {
   movies: IMovie[];
   itemCount: number;
   userParam = new UserParams();
-  // our search field input is a child of shop component
+  
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
 
   constructor(private movieService: MovieService) { }

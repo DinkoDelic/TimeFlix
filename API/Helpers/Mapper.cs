@@ -13,8 +13,11 @@ namespace API.Helpers
         private readonly ICrewRepository<Actor> _actorRepo;
         private readonly ICrewRepository<Writer> _writerRepo;
         private readonly ICrewRepository<Director> _directorRepo;
-        public Mapper(ICrewRepository<Actor> actorRepo, ICrewRepository<Writer> writerRepo, ICrewRepository<Director> directorRepo)
+        private readonly ICrewRepository<Genre> _genreRepo;
+
+        public Mapper(ICrewRepository<Actor> actorRepo, ICrewRepository<Writer> writerRepo, ICrewRepository<Director> directorRepo, ICrewRepository<Genre> genreRepo)
         {
+            _genreRepo = genreRepo;
             _directorRepo = directorRepo;
             _writerRepo = writerRepo;
             _actorRepo = actorRepo;
@@ -23,25 +26,25 @@ namespace API.Helpers
         public List<MovieDto> MapMovieToMovieDtoList(List<Movie> movies)
         {
             var moviesToReturn = new List<MovieDto>();
-            
+
             foreach (Movie m in movies)
             {
                 moviesToReturn.Add(new MovieDto
                 {
                     MovieId = m.MovieId,
                     Title = m.Title,
-                    Genre = m.Genre,
-                    Storyline = m.Storyline,
+                    Plot = m.Plot,
                     AgeRating = m.AgeRating,
                     ReleaseDate = m.ReleaseDate,
                     Duration = m.Duration,
                     // Check to see if the lists are included, if not assign null to property
+                    Genres = m.GenresLink != null ? m.GenresLink.Select(a => a.Genre).ToList() : null,
                     Actors = m.ActorsLink != null ? m.ActorsLink.Select(a => a.Actor).ToList() : null,
                     Writers = m.WritersLink != null ? m.WritersLink.Select(w => w.Writer).ToList() : null,
                     Directors = m.DirectorsLink != null ? m.DirectorsLink.Select(d => d.Director).ToList() : null
                 });
             }
-           
+
             return moviesToReturn;
         }
 
@@ -50,17 +53,28 @@ namespace API.Helpers
             var createdMovie = new Movie
             {
                 Title = dto.Title,
-                Genre = dto.Genre,
-                Storyline = dto.Storyline,
+                Plot = dto.Plot,
                 AgeRating = dto.AgeRating,
                 ReleaseDate = dto.ReleaseDate,
                 Duration = dto.Duration
             };
 
+            var genreList = new List<MovieGenre>();
+            foreach (Genre g in dto.Genres)
+            {
+                genreList.Add(new MovieGenre
+                {
+                    Movie = createdMovie,
+                    // Look if the genre with the same name is in db, if not create a new genre
+                    Genre = await _genreRepo.FindByName(g.Name) ?? new Genre { Name = g.Name.Trim() }
+                });
+            }
+            createdMovie.GenresLink = genreList;
+
             var writersList = new List<MovieWriter>();
             foreach (Writer w in dto.Writers)
             {
-                 writersList.Add(new MovieWriter
+                writersList.Add(new MovieWriter
                 {
                     Movie = createdMovie,
                     // Look if the writer with the same name is in db, if not create a new writer
@@ -72,7 +86,7 @@ namespace API.Helpers
             var actorList = new List<MovieActor>();
             foreach (Actor a in dto.Actors)
             {
-                 actorList.Add(new MovieActor
+                actorList.Add(new MovieActor
                 {
                     Movie = createdMovie,
                     Actor = await _actorRepo.FindByName(a.Name) ?? new Actor { Name = a.Name.Trim() }

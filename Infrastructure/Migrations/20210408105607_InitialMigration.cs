@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.Data.Migrations
+namespace Infrastructure.Migrations
 {
     public partial class InitialMigration : Migration
     {
@@ -36,14 +36,27 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
                     MovieId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Genre = table.Column<string>(type: "TEXT", nullable: true),
-                    Storyline = table.Column<string>(type: "TEXT", nullable: true),
+                    Plot = table.Column<string>(type: "TEXT", nullable: true),
                     AgeRating = table.Column<string>(type: "TEXT", nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Duration = table.Column<int>(type: "INTEGER", nullable: false)
@@ -116,6 +129,30 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MovieGenre",
+                columns: table => new
+                {
+                    MovieId = table.Column<int>(type: "INTEGER", nullable: false),
+                    GenreId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MovieGenre", x => new { x.MovieId, x.GenreId });
+                    table.ForeignKey(
+                        name: "FK_MovieGenre_Genres_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MovieGenre_Movies_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movies",
+                        principalColumn: "MovieId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MovieWriter",
                 columns: table => new
                 {
@@ -150,6 +187,11 @@ namespace Infrastructure.Data.Migrations
                 column: "DirectorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MovieGenre_GenreId",
+                table: "MovieGenre",
+                column: "GenreId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MovieWriter_WriterId",
                 table: "MovieWriter",
                 column: "WriterId");
@@ -164,6 +206,9 @@ namespace Infrastructure.Data.Migrations
                 name: "MovieDirector");
 
             migrationBuilder.DropTable(
+                name: "MovieGenre");
+
+            migrationBuilder.DropTable(
                 name: "MovieWriter");
 
             migrationBuilder.DropTable(
@@ -171,6 +216,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Directors");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "Movies");

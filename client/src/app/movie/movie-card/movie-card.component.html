@@ -5,7 +5,7 @@
 
       <p class="d-inline-block text-muted">({{ movie.releaseDate | date }})</p>
     </div>
-    <p class="d-block">{{ movie.genre }}</p>
+    <p class="d-inline-block mr-2" *ngFor="let genre of movie.genres">{{genre.name}}</p>
   </div>
   <div class="d-inline">
     <button
