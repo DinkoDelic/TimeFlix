@@ -1,10 +1,10 @@
-<div class="container main p-3">
+<div class="container d-flex flex-column main p-3 justify-content-center">
   <!-- ng-If checks if movies are loaded before rendering template, otherwise we get a console error -->
   <div class="p-3" *ngIf="movies">
     <div class="d-flex justify-content-between mb-4">
       <h2 class="d-inline-block" style="font-size: 2.5rem;">Movies</h2>
     <button
-      class="d-inline btn mt-3"
+      class="d-inline btn mt-3 teal"
       style="width: 110px"
       routerLink="create"
     >
@@ -24,14 +24,14 @@
       />
       <div class="d-inline mr-1" style="padding: 0">
         <button
-          class="d-inline btn btn-outline-primary btn-sm find-btn"
+          class="d-inline btn btn-outline btn-sm search-btn"
           (click)="onSearch()"
           style="width: 40px"
         >
           <i class="fa fa-search"></i>
         </button>
         <button
-          class="d-inline btn btn-outline-success btn-sm ml-3 chancel-btn"
+          class="d-inline btn btn-outline-secondary btn-sm ml-3"
           (click)="onReset()"
           style="width: 40px"
         >

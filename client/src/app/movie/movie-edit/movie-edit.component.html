@@ -1,0 +1,270 @@
+<div class="container main p-4 d-flex flex-column justify-content-center" *ngIf="movie">
+    <h2 class="d-block" style="margin: 0 auto">Add a movie</h2>
+    <div class="d-flex main justify-content-center">
+      <form [formGroup]="myForm">
+        <!-- TITLE -->
+        <div class="md-form form-sm">
+          <input
+            mdbInput
+            required
+            type="text"
+            id="title"
+            formControlName="title"
+            style="color: white"
+            class="form-control form-control-sm"
+            [ngModel]="movie.title"
+          >
+          <label for="title" class="">Title</label>
+          <span
+            class="text-danger"
+            *ngIf="myForm.get('title').invalid && myForm.get('title').touched"
+            >Title is required</span
+          >
+        </div>
+        <div class="md-form form-sm">
+          <input
+            mdbInput
+            required
+            type="number"
+            id="duration"
+            formControlName="duration"
+            style="color: white"
+            class="form-control form-control-sm"
+            [ngModel]="movie.duration"
+          />
+          <label for="duration" class="">Duration (minutes)</label>
+          <span
+            class="text-danger"
+            *ngIf="myForm.get('duration').invalid && myForm.get('duration').touched"
+            >Duration is required</span
+          >
+        </div>
+        <div class="d-flex justify-content-start">
+          <!-- AGE RATING -->
+          <div class="form-group">
+            <label for="ageRating" style="color: #757575">Age rating</label>
+            <select
+              class="browser-default custom-select"
+              formControlName="ageRating"
+              id="ageRating"
+              style="max-width: 250px"
+              [ngModel]="movie.ageRating"
+            >
+              <option value="G">G</option>
+              <option value="PG">PG</option>
+              <option value="PG-13">PG-13</option>
+              <option value="R">R</option>
+              <option value="NC-17">NC-17</option>
+            </select>
+            <span
+            class="d-block text-danger"
+            *ngIf="myForm.get('ageRating').invalid && myForm.get('ageRating').touched"
+            >Age rating is required</span>
+          </div>
+  
+          <!-- RELEASE DATE -->
+          <div class="form-group ml-5">
+            <label for="release" style="color: #757575">Release date</label>
+            <input
+              type="text"
+              name="release"
+              placeholder="Date"
+              class="form-control"
+              formControlName="releaseDate"
+              style="max-width: 250px"
+              [ngModel]="movie.releaseDate"
+              bsDatepicker
+            />
+            <span
+            class="d-block text-danger"
+            *ngIf="myForm.get('releaseDate').invalid && myForm.get('releaseDate').touched"
+            >Release date is required</span>
+          </div>
+        </div>
+  
+        <!-- GENRES -->
+        <div class="mt-4">
+          <div formArrayName="genres">
+            <label for="Genre">Genres</label>
+            <div class="d-inline">
+              <button class="btn teal" (click)="addGenre()">
+                Add <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <span
+            class="d-block text-warning mt-1"
+            *ngIf="myForm.get('genres').invalid && myForm.get('title').touched"
+            >Genre is required</span>
+            
+            <div
+              class="d-flex justify-content-start"
+              *ngFor="let genre of genreForms.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div class="md-form form-sm d-inline mt-3">
+                <input
+                  mdbInput
+                  [typeahead]="genreList.list"
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  style="color: white"
+                  class="form-control form-control-sm"
+                />
+                <label for="name" class="">Genre</label>
+                <span
+                class="d-block text-danger"
+                *ngIf="genre.get('name').invalid && genre.get('name').touched"
+                >Name of genre is required</span>
+                
+              </div>
+              <div class="d-inline mt-3 ml-2">
+                <button class="btn btn-danger" (click)="deleteGenre(i)">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- DIRECTORS -->
+        <div class="mt-4">
+          <div formArrayName="directors">
+            <label class="" for="Director">Directors</label>
+            <div class="d-inline">
+              <button class="btn teal" (click)="addDirector()">
+                Add <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <div
+              class="d-flex justify-content-start"
+              *ngFor="let director of directorForms.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div class="md-form form-sm d-inline mt-3">
+                <input
+                  mdbInput
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  style="color: white"
+                  class="form-control form-control-sm"
+                />
+                <label for="name" class="">Name</label>
+                <span
+                class="d-block text-danger"
+                *ngIf="director.get('name').invalid && director.get('name').touched"
+                >Name is required</span>
+                
+              </div>
+              <div class="d-inline mt-3 ml-2">
+                <button class="btn btn-danger" (click)="deleteDirector(i)">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- WRITERS -->
+        <div class="mt-4">
+          <div formArrayName="writers">
+            <label for="writer">Writers</label>
+            <div class="d-inline">
+              <button class="btn teal" (click)="addWriter()">
+                Add<i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <div
+              class="d-flex justify-content-start"
+              *ngFor="let writers of writerForms.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div class="md-form form-sm d-inline mt-3">
+                <input
+                  mdbInput
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  style="color: white"
+                  class="form-control form-control-sm"
+                />
+                <label for="name" class="">Name</label>
+                <span
+                class="d-block text-danger"
+                *ngIf="writer.get('name').invalid && writer.get('name').touched"
+                >Name is required</span>
+              </div>
+              <div class="d-inline mt-3 ml-2">
+                <button class="btn btn-danger" (click)="deleteWriter(i)">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ACTORS -->
+        <div class="mt-4">
+          <div formArrayName="actors">
+            <label for="actors">Actors</label>
+            <div class="d-inline">
+              <button class="btn teal" (click)="addActor()">
+                Add <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <div
+              class="d-flex justify-content-start"
+              *ngFor="let actor of actorForms.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div class="md-form form-sm d-inline mt-3">
+                <input
+                  mdbInput
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  style="color: white"
+                  class="form-control form-control-sm"
+                />
+                <label for="name" class="">Name</label>
+                <span
+                class="d-block text-danger"
+                *ngIf="actor.get('name').invalid && actor.get('name').touched"
+                >Name is required</span>
+              </div>
+              <div class="d-inline mt-3 ml-2">
+                <button class="btn btn-danger" (click)="deleteActor(i)">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- plot -->
+        <div class="md-form">
+          <textarea
+            type="text"
+            id="plot"
+            formControlName="plot"
+            class="md-textarea md-textarea-auto form-control"
+            style="color: white"
+            mdbInput
+          >{{movie.plot}}</textarea>
+          <label for="plot">Plot summary</label>
+        </div>
+  
+        <div class="d-flex justify-content-between mt-5 pr-2">
+          <button class="btn btn-outline-danger btn-lg" routerLink="/movies">Back</button>
+          <button
+            type="submit"
+            (click)="createNew()"
+            class="btn btn-outline btn-lg"
+            style="background-color: #0d7377; color: white"
+            [disabled]="myForm.invalid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

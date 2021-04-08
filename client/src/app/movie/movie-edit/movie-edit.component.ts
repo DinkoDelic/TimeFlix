@@ -1,22 +1,23 @@
-
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
   FormArray,
+  FormBuilder,
   FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { GenreList } from 'src/app/helpers/genreList';
 import { IMovie } from 'src/app/_models/IMovie';
+import { MovieService } from 'src/app/_services/movie.service';
 
 @Component({
-  selector: 'app-movie-create',
-  templateUrl: './movie-create.component.html',
-  styleUrls: ['./movie-create.component.scss'],
+  selector: 'app-movie-edit',
+  templateUrl: './movie-edit.component.html',
+  styleUrls: ['./movie-edit.component.sass'],
 })
-export class MovieCreateComponent implements OnInit {
-  movie: IMovie;
+export class MovieEditComponent implements OnInit {
+  movie?: IMovie;
   genreList;
   myForm: FormGroup;
   director: FormGroup;
@@ -24,9 +25,24 @@ export class MovieCreateComponent implements OnInit {
   actor: FormGroup;
   writer: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private movieService: MovieService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    // uses activatedRoute to grab id paramater from url
+    this.movieService
+      .GetMovie(this.activatedRoute.snapshot.paramMap.get('movieid'))
+      .subscribe(
+        (response) => {
+          this.movie = response;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     this.createForm();
     this.genreList = new GenreList();
   }
@@ -56,6 +72,7 @@ export class MovieCreateComponent implements OnInit {
   get genreForms() {
     return this.myForm.get('genres') as FormArray;
   }
+
 
   addGenre() {
     this.genre = this.fb.group({
