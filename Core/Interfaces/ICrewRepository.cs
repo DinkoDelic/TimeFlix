@@ -10,6 +10,6 @@ namespace Core.Interfaces
         Task<List<T>> ListAllAsync();
         Task<List<T>> ListByNameAsync(string name);
 
-        Task<T> FindByName(string name);
+        Task<T> FindByNameAsync(string name);
     }
 }

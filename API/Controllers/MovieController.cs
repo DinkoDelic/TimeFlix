@@ -27,12 +27,14 @@ namespace API.Controllers
         public async Task<ActionResult<Pagination<MovieDto>>> GetMovies([FromQuery] UserParams userParams)
         {
             var movies = new List<Movie>();
-            // returns search results else returns full movie collection
+
+            // returns search results
             if (userParams.nameFilter != null)
             {
                 movies = await _movieRepo.SearchMoviesByNameAsync(userParams);
                 
             }
+            //returns full movie collection
             else
             {
                 movies = await _movieRepo.GetAllMoviesAsync(userParams);   
@@ -58,6 +60,7 @@ namespace API.Controllers
             if (movie == null)
                 return NotFound(new ApiResponse(404));
 
+            // Because the mapper method takes in and returns list we have grab first item
             var movieToReturn = _mapper.MapMovieToMovieDtoList(new List<Movie> { movie }).First();
 
             return Ok(movieToReturn);
@@ -92,6 +95,24 @@ namespace API.Controllers
 
             return BadRequest("Failed to delete a movie");
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateMovie(MovieDto movieDto)
+        {
+            var movieToUpdate = await _movieRepo.GetMovieByIdAsync(movieDto.MovieId);
+
+            if(movieToUpdate == null)
+                return BadRequest();
+
+
+            _movieRepo.Update(await _mapper.UpdateMovie(movieDto, movieToUpdate));
+
+            if(await _movieRepo.SaveChangesAsync()) 
+                return NoContent();
+            
+            return BadRequest("Failed to update movie");
+        }
+
     }
 
 

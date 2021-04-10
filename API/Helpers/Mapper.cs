@@ -37,7 +37,7 @@ namespace API.Helpers
                     AgeRating = m.AgeRating,
                     ReleaseDate = m.ReleaseDate,
                     Duration = m.Duration,
-                    // Check to see if the lists are included, if not assign null to property
+                    // Check to see if the lists are included, if not assign null
                     Genres = m.GenresLink != null ? m.GenresLink.Select(a => a.Genre).ToList() : null,
                     Actors = m.ActorsLink != null ? m.ActorsLink.Select(a => a.Actor).ToList() : null,
                     Writers = m.WritersLink != null ? m.WritersLink.Select(w => w.Writer).ToList() : null,
@@ -52,6 +52,7 @@ namespace API.Helpers
         {
             var createdMovie = new Movie
             {
+                MovieId = dto.MovieId,
                 Title = dto.Title,
                 Plot = dto.Plot,
                 AgeRating = dto.AgeRating,
@@ -62,11 +63,13 @@ namespace API.Helpers
             var genreList = new List<MovieGenre>();
             foreach (Genre g in dto.Genres)
             {
+                var genreToAdd = await _genreRepo.FindByNameAsync(g.Name);
+
                 genreList.Add(new MovieGenre
                 {
                     Movie = createdMovie,
                     // Look if the genre with the same name is in db, if not create a new genre
-                    Genre = await _genreRepo.FindByName(g.Name) ?? new Genre { Name = g.Name.Trim() }
+                    Genre = genreToAdd != null ? genreToAdd : new Genre { Name = g.Name.Trim() }
                 });
             }
             createdMovie.GenresLink = genreList;
@@ -74,11 +77,13 @@ namespace API.Helpers
             var writersList = new List<MovieWriter>();
             foreach (Writer w in dto.Writers)
             {
+                var writerToAdd = await _writerRepo.FindByNameAsync(w.Name);
+
                 writersList.Add(new MovieWriter
                 {
                     Movie = createdMovie,
                     // Look if the writer with the same name is in db, if not create a new writer
-                    Writer = await _writerRepo.FindByName(w.Name) ?? new Writer { Name = w.Name.Trim() }
+                    Writer = writerToAdd ?? new Writer { Name = w.Name.Trim(), ImageUrl = w.ImageUrl }
                 });
             }
             createdMovie.WritersLink = writersList;
@@ -86,10 +91,11 @@ namespace API.Helpers
             var actorList = new List<MovieActor>();
             foreach (Actor a in dto.Actors)
             {
+                var actorToAdd = await _actorRepo.FindByNameAsync(a.Name);
                 actorList.Add(new MovieActor
                 {
                     Movie = createdMovie,
-                    Actor = await _actorRepo.FindByName(a.Name) ?? new Actor { Name = a.Name.Trim() }
+                    Actor = actorToAdd ?? new Actor { Name = a.Name.Trim(), ImageUrl = a.ImageUrl }
                 });
             }
             createdMovie.ActorsLink = actorList;
@@ -97,15 +103,74 @@ namespace API.Helpers
             var directorList = new List<MovieDirector>();
             foreach (Director d in dto.Directors)
             {
+                var directorToAdd = await _directorRepo.FindByNameAsync(d.Name);
                 directorList.Add(new MovieDirector
                 {
                     Movie = createdMovie,
-                    Director = await _directorRepo.FindByName(d.Name) ?? new Director { Name = d.Name.Trim() }
+                    Director = directorToAdd ?? new Director { Name = d.Name.Trim(), ImageUrl = d.ImageUrl }
                 });
             }
             createdMovie.DirectorsLink = directorList;
 
             return createdMovie;
+        }
+
+        public async Task<Movie> UpdateMovie(MovieDto dto, Movie movieToUpdate)
+        {
+
+            var genreList = new List<MovieGenre>();
+            foreach (Genre g in dto.Genres)
+            {
+                var genreToAdd = await _genreRepo.FindByNameAsync(g.Name);
+
+                genreList.Add(new MovieGenre
+                {
+                    Movie = movieToUpdate,
+                    // Look if the genre with the same name is in db, if not create a new genre
+                    Genre = genreToAdd != null ? genreToAdd : new Genre { Name = g.Name.Trim() }
+                });
+            }
+            movieToUpdate.GenresLink = genreList;
+
+            var writersList = new List<MovieWriter>();
+            foreach (Writer w in dto.Writers)
+            {
+                var writerToAdd = await _writerRepo.FindByNameAsync(w.Name);
+
+                writersList.Add(new MovieWriter
+                {
+                    Movie = movieToUpdate,
+                    // Look if the writer with the same name is in db, if not create a new writer
+                    Writer = writerToAdd ?? new Writer { Name = w.Name.Trim(), ImageUrl = w.ImageUrl }
+                });
+            }
+            movieToUpdate.WritersLink = writersList;
+
+            var actorList = new List<MovieActor>();
+            foreach (Actor a in dto.Actors)
+            {
+                var actorToAdd = await _actorRepo.FindByNameAsync(a.Name);
+                actorList.Add(new MovieActor
+                {
+                    Movie = movieToUpdate,
+                    Actor = actorToAdd ?? new Actor { Name = a.Name.Trim(), ImageUrl = a.ImageUrl }
+                });
+            }
+            movieToUpdate.ActorsLink = actorList;
+
+            var directorList = new List<MovieDirector>();
+            foreach (Director d in dto.Directors)
+            {
+                var directorToAdd = await _directorRepo.FindByNameAsync(d.Name);
+                directorList.Add(new MovieDirector
+                {
+                    Movie = movieToUpdate,
+                    Director = directorToAdd ?? new Director { Name = d.Name.Trim(), ImageUrl = d.ImageUrl }
+                });
+            }
+            movieToUpdate.DirectorsLink = directorList;
+
+            return movieToUpdate;
         }
     }
 }

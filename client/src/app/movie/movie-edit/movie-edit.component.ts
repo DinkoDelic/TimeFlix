@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
@@ -7,34 +8,37 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { error } from 'selenium-webdriver';
 import { GenreList } from 'src/app/helpers/genreList';
+import { IActor } from 'src/app/_models/IActor';
+import { IDirector } from 'src/app/_models/IDirector';
+import { IGenre } from 'src/app/_models/IGenre';
+import { IImage } from 'src/app/_models/IImage';
 import { IMovie } from 'src/app/_models/IMovie';
+import { IWriter } from 'src/app/_models/IWriter';
 import { MovieService } from 'src/app/_services/movie.service';
 
 @Component({
   selector: 'app-movie-edit',
   templateUrl: './movie-edit.component.html',
-  styleUrls: ['./movie-edit.component.sass'],
+  styleUrls: ['./movie-edit.component.scss'],
 })
 export class MovieEditComponent implements OnInit {
   movie?: IMovie;
-  genreList;
   myForm: FormGroup;
-  director: FormGroup;
-  genre: FormGroup;
-  actor: FormGroup;
-  writer: FormGroup;
+  genreList;
+  img: IImage;
 
   constructor(
-    private fb: FormBuilder,
     private movieService: MovieService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // uses activatedRoute to grab id paramater from url
     this.movieService
-      .GetMovie(this.activatedRoute.snapshot.paramMap.get('movieid'))
+      .getMovie(this.activatedRoute.snapshot.paramMap.get('movieid'))
       .subscribe(
         (response) => {
           this.movie = response;
@@ -43,29 +47,54 @@ export class MovieEditComponent implements OnInit {
           console.log(error);
         }
       );
+
     this.createForm();
+    this.getDogImage();
     this.genreList = new GenreList();
   }
 
+  // Using form builder to create form
   createForm() {
     this.myForm = this.fb.group({
-      title: new FormControl('', Validators.required),
-      duration: new FormControl('', Validators.required),
-      plot: new FormControl(''),
-      ageRating: new FormControl('PG-13', Validators.required),
-      releaseDate: new FormControl('', Validators.required),
-      genres: new FormArray([], Validators.required),
+      genres: new FormArray([]),
       directors: new FormArray([]),
       writers: new FormArray([]),
       actors: new FormArray([]),
     });
   }
 
-  createNew() {
+  updateMovie() {
     if (this.myForm.valid) {
-      this.movie = Object.assign({}, this.myForm.value);
+      this.genreForms.value.forEach((element) => {
+        if (this.movie.genres.every((x) => x.name !== element.name)) {
+          this.movie.genres.push(element);
+        }
+      });
+      this.directorForms.value.forEach((element) => {
+        if (this.movie.directors.every((x) => x.name !== element.name)) {
+          this.movie.directors.push(element);
+        }
+      });
+      this.writerForms.value.forEach((element) => {
+        if (this.movie.writers.every((x) => x.name !== element.name)) {
+          this.movie.writers.push(element);
+        }
+      });
+      this.actorForms.value.forEach((element) => {
+        if (this.movie.actors.every((x) => x.name !== element.name)) {
+          this.movie.actors.push(element);
+        }
+      });
+
+      this.movieService.updateMovie(this.movie).subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
-    console.log(this.movie);
   }
 
   // Adding and removing genres
@@ -73,16 +102,18 @@ export class MovieEditComponent implements OnInit {
     return this.myForm.get('genres') as FormArray;
   }
 
-
   addGenre() {
-    this.genre = this.fb.group({
+    const genre = this.fb.group({
       name: new FormControl('', Validators.required),
     });
 
-    this.genreForms.push(this.genre);
+    this.genreForms.push(genre);
   }
-  deleteGenre(i) {
-    this.genreForms.removeAt(i);
+  deleteGenre(array: any[], i) {
+    array.splice(i, 1);
+  }
+  deleteNewItem(array: FormArray, i) {
+    array.removeAt(i);
   }
 
   // Adding and removing directors
@@ -91,14 +122,17 @@ export class MovieEditComponent implements OnInit {
   }
 
   addDirector() {
-    this.director = this.fb.group({
+    const director = this.fb.group({
       name: new FormControl('', Validators.required),
+      imageUrl: new FormControl(),
     });
+    this.getDogImage();
+    director.get('imageUrl').setValue(this.img.message ?? '');
 
-    this.directorForms.push(this.director);
+    this.directorForms.push(director);
   }
-  deleteDirector(i) {
-    this.directorForms.removeAt(i);
+  deleteDirector(array: IDirector[], i) {
+    array.splice(i, 1);
   }
 
   // Adding and removing writers
@@ -107,14 +141,17 @@ export class MovieEditComponent implements OnInit {
   }
 
   addWriter() {
-    this.writer = this.fb.group({
+    const writer = this.fb.group({
       name: new FormControl('', Validators.required),
+      imageUrl: new FormControl(),
     });
+    this.getDogImage();
+    writer.get('imageUrl').setValue(this.img.message ?? '');
 
-    this.writerForms.push(this.writer);
+    this.writerForms.push(writer);
   }
-  deleteWriter(i) {
-    this.writerForms.removeAt(i);
+  deleteWriter(array: IWriter[], i) {
+    array.splice(i, 1);
   }
 
   // Adding and removing actors
@@ -123,13 +160,28 @@ export class MovieEditComponent implements OnInit {
   }
 
   addActor() {
-    this.actor = this.fb.group({
+    const actor = this.fb.group({
       name: new FormControl('', Validators.required),
+      imageUrl: new FormControl(),
     });
+    this.getDogImage();
+    actor.get('imageUrl').setValue(this.img.message ?? '');
 
-    this.actorForms.push(this.actor);
+    this.actorForms.push(actor);
   }
-  deleteActor(i) {
-    this.actorForms.removeAt(i);
+  deleteActor(array: IActor[], i) {
+    array.splice(i, 1);
+  }
+
+  // Gets random dog image for crew
+  getDogImage() {
+    this.movieService.GetDogImage().subscribe(
+      (response) => {
+        this.img = response.body;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

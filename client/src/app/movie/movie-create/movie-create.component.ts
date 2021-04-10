@@ -20,20 +20,18 @@ export class MovieCreateComponent implements OnInit {
   movie: IMovie;
   genreList;
   myForm: FormGroup;
-  director: FormGroup;
-  genre: FormGroup;
-  actor: FormGroup;
-  writer: FormGroup;
   img: IImage;
 
   constructor(private fb: FormBuilder, private movieService: MovieService) {}
 
   ngOnInit(): void {
     this.createForm();
+    // Used for auto complete function when adding genres
     this.genreList = new GenreList();
     this.getDogImage();
   }
 
+  // Using form builder to create form
   createForm() {
     this.myForm = this.fb.group({
       title: new FormControl('', Validators.required),
@@ -48,6 +46,7 @@ export class MovieCreateComponent implements OnInit {
     });
   }
 
+  // Gets random dog image for crew
   getDogImage() {
     this.movieService.GetDogImage().subscribe(
       (response) => {
@@ -57,19 +56,37 @@ export class MovieCreateComponent implements OnInit {
         console.log(error);
       }
     );
-
   }
 
   createNew() {
     if (this.myForm.valid) {
       this.movie = Object.assign({}, this.myForm.value);
     }
-    this.movieService.CreateMovie(this.movie).subscribe(response => {
-      console.log(response);
-    }, error => {
-      console.log(error);
-    });
+    this.movie.genres = this.reduce(this.movie.genres);
+    this.movie.directors = this.reduce(this.movie.directors);
+    this.movie.writers = this.reduce(this.movie.writers);
+    this.movie.actors = this.reduce(this.movie.actors);
+    this.movieService.createMovie(this.movie).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 
+  // Removes duplicates from our form
+  reduce(array: Array<any>) {
+    const res = [];
+    array.map(function (item) {
+      var existItem = res.find((x) => x.name === item.name);
+      if (!existItem) {
+        res.push(item);
+      }
+    });
+    console.log(res);
+    return res;
   }
 
   // Adding and removing genres
@@ -96,10 +113,10 @@ export class MovieCreateComponent implements OnInit {
   addDirector() {
     const director = this.fb.group({
       name: new FormControl('', Validators.required),
-      image: new FormControl(),
+      imageUrl: new FormControl(),
     });
     this.getDogImage();
-    director.get('image').setValue(this.img.message);
+    director.get('imageUrl').setValue(this.img.message);
 
     this.directorForms.push(director);
   }
@@ -115,11 +132,10 @@ export class MovieCreateComponent implements OnInit {
   addWriter() {
     const writer = this.fb.group({
       name: new FormControl('', Validators.required),
-      image: new FormControl(),
+      imageUrl: new FormControl(),
     });
     this.getDogImage();
-    writer.get('image').setValue(this.img.message);
-
+    writer.get('imageUrl').setValue(this.img.message);
 
     this.writerForms.push(writer);
   }
@@ -135,11 +151,10 @@ export class MovieCreateComponent implements OnInit {
   addActor() {
     const actor = this.fb.group({
       name: new FormControl('', Validators.required),
-      image: new FormControl(),
+      imageUrl: new FormControl(),
     });
     this.getDogImage();
-    actor.get('image').setValue(this.img.message);
-
+    actor.get('imageUrl').setValue(this.img.message);
 
     this.actorForms.push(actor);
   }

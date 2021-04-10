@@ -1,0 +1,24 @@
+.main {
+    background-color: #323232;
+    color: white;
+}
+
+label {
+    min-width: 100px;
+    color: #999797;
+}
+
+input, textarea{
+    max-width: 500px;
+}
+
+.teal {
+    background-color: transparent !important;
+    border: 1px solid #0d7377;
+    color: #FFFFFF;
+    min-width: 110px;
+}
+.teal:hover{
+    background-color:#0d7377 !important;
+    
+}

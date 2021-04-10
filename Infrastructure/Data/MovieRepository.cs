@@ -26,6 +26,11 @@ namespace Infrastructure.Data
             _movieContext.Remove(entity);
         }
 
+        public void Update<T>(T entity) where T : class
+        {
+            _movieContext.Update(entity);
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             // Returns true if changes were saved successfully
@@ -47,17 +52,17 @@ namespace Infrastructure.Data
             return movies;
         }
 
-          public async Task<List<Movie>> SearchMoviesByNameAsync(UserParams userParams)
+        public async Task<List<Movie>> SearchMoviesByNameAsync(UserParams userParams)
         {
-             var movies = await _movieContext.Movies
-                .Include(m => m.GenresLink)
-                .ThenInclude(m => m.Genre)
-                .Where(m => m.Title.ToLower().Contains(userParams.nameFilter.ToLower()))
-                .OrderBy(m => m.Title)
-                // Implementing pagination parameters with .Skip and .Take
-                .Skip((userParams.CurrentPage - 1) * userParams.Offset)
-                .Take(userParams.Offset)
-                .ToListAsync();
+            var movies = await _movieContext.Movies
+               .Include(m => m.GenresLink)
+               .ThenInclude(m => m.Genre)
+               .Where(m => m.Title.ToLower().Contains(userParams.nameFilter.ToLower()))
+               .OrderBy(m => m.Title)
+               // Implementing pagination parameters with .Skip and .Take
+               .Skip((userParams.CurrentPage - 1) * userParams.Offset)
+               .Take(userParams.Offset)
+               .ToListAsync();
 
             return movies;
         }
@@ -78,23 +83,19 @@ namespace Infrastructure.Data
                 // Doing it as a single query will give us a warning about potential performance hit
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(m => m.MovieId == id);
-            
+
             return movie;
         }
 
-        public Task<Movie> UpdateMovieByIdAsync(int id)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public async Task<int> GetTotalMovieCount(UserParams userParams)
         {
-            if(userParams.nameFilter != null)
+            if (userParams.nameFilter != null)
                 return await _movieContext.Movies
                     .Where(m => m.Title.ToLower().Contains(userParams.nameFilter.ToLower()))
                     .CountAsync();
             else
-                 return await _movieContext.Movies.CountAsync();
+                return await _movieContext.Movies.CountAsync();
         }
 
     }

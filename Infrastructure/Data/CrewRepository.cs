@@ -31,9 +31,14 @@ namespace Infrastructure.Data
             return await _movieContext.Set<T>().Where(x => x.Name.ToLower().Contains(name.ToLower())).ToListAsync();
         }
 
-        public async Task<T> FindByName(string name)
+        public async Task<T> FindByNameAsync(string name)
         {
-            return await _movieContext.Set<T>().Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+            var objectToReturn = await _movieContext.Set<T>().Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+
+            if (objectToReturn != null)
+                return objectToReturn;
+
+            return null;
         }
     }
 }

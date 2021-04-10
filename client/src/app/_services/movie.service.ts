@@ -16,7 +16,7 @@ export class MovieService {
   constructor(private http: HttpClient) {}
 
   // Get paginated response
-  GetMovies(userParams: UserParams) {
+  getMovies(userParams: UserParams) {
     let params = new HttpParams();
     if (userParams.currentPage !== 0)
     {
@@ -42,20 +42,35 @@ export class MovieService {
   }
 
   // Get individual movie
-  GetMovie(id:any) {
+  getMovie(id:any) {
     return this.http.get<IMovie>(environment.url + 'Movie/' + id);
   }
 
-  CreateMovie(movie: IMovie)
+  createMovie(movie: IMovie)
   {
     return this.http.post<IMovie>(environment.url + 'Movie/', movie , {observe: 'response'})
       .pipe(
         map(
           response => {
-            return response.statusText; 
+            return response.statusText;
           }
         )
-      )
+      );
+  }
+
+  updateMovie(movie: IMovie) {
+    return this.http.put(environment.url + 'Movie/', movie, {observe: 'response'})
+      .pipe(
+        map(
+          response => {
+            return response.statusText;
+          }
+        )
+      );
+  }
+
+  deleteMovie(id) {
+    return this.http.delete(environment.url + 'Movie/' + id);
   }
 
   GetDogImage() {

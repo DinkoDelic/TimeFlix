@@ -14,7 +14,6 @@ export class MovieListComponent implements OnInit {
   movies: IMovie[];
   itemCount: number;
   userParam = new UserParams();
-  
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
 
   constructor(private movieService: MovieService) { }
@@ -25,7 +24,7 @@ export class MovieListComponent implements OnInit {
 
   getMovies() {
     // We subscribe to observable of type IPagination
-    this.movieService.GetMovies(this.userParam).subscribe(response => {
+    this.movieService.getMovies(this.userParam).subscribe(response => {
       this.movies = response.data;
       this.userParam.offset = response.offset;
       this.userParam.currentPage = response.currentPage;
@@ -34,12 +33,14 @@ export class MovieListComponent implements OnInit {
       console.log(error);
     });
   }
-
+  // Takes the value from search input and assigns it to userParams, then call getMovies with those params
   onSearch(){
+    console.log(this.searchTerm.nativeElement.value);
     this.userParam.nameFilter = this.searchTerm.nativeElement.value;
     this.userParam.currentPage = 1;
     this.getMovies();
   }
+  // Removes search name param and call getMovies without it
   onReset(){
     this.userParam.nameFilter = null;
     this.searchTerm.nativeElement.value = 'Search';

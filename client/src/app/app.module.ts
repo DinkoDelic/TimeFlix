@@ -9,6 +9,7 @@ import { MovieCreateComponent } from './movie/movie-create/movie-create.componen
 import { AppRoutingModule } from './app-routing.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MovieListComponent } from './movie/movie-list/movie-list.component';
@@ -41,7 +42,8 @@ import { MovieEditComponent } from './movie/movie-edit/movie-edit.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
+    FormsModule
   ],
   providers: [
   ],
