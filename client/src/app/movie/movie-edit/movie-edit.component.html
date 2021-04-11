@@ -274,14 +274,14 @@
     </div>
 
     <div class="d-flex justify-content-between mt-5 pr-2">
-      <button class="btn btn-outline-danger btn-lg" routerLink="/movies">
+      <button class="btn btn-outline-danger btn-lg" routerLink="../">
         Back
       </button>
       <button
         type="submit"
         class="btn btn-outline btn-lg"
         style="background-color: #0d7377; color: white"
-        [disabled]="myForm.invalid"
+        [disabled]="!myForm.dirty"
         (click)="updateMovie()"
         routerLink="/"
       >

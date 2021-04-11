@@ -16,7 +16,7 @@
       class="d-inline list-group list-group-horizontal-md ml-1"
       *ngFor="let genre of movie.genres"
     >
-      <li class="mr-3 d-inline-block" style="border: 0; padding: 0">
+      <li class="mr-3 d-inline-block interact" style="border: 0; padding: 0">
         {{ genre.name }}
       </li>
     </ul>
@@ -29,7 +29,7 @@
       class="d-inline list-group list-group-horizontal-md ml-1"
       *ngFor="let director of movie.directors"
     >
-      <li class="mr-3 d-inline-block" style="border: 0; padding: 0">
+      <li class="mr-3 d-inline-block interact" style="border: 0; padding: 0">
         {{ director.name }}
       </li>
     </ul>
@@ -42,7 +42,7 @@
       class="d-inline list-group list-group-horizontal-md"
       *ngFor="let writer of movie.writers"
     >
-      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+      <li class="mr-2 ml-1 d-inline-block interact" style="border: 0; padding: 0">
         {{ writer.name }}
       </li>
     </ul>
@@ -55,7 +55,7 @@
       class="d-inline list-group list-group-horizontal-md"
       *ngFor="let actor of movie.actors"
     >
-      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+      <li class="mr-2 ml-1 d-inline-block interact" style="border: 0; padding: 0">
         {{ actor.name }}
       </li>
     </ul>

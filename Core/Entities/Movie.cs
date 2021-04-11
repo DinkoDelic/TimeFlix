@@ -13,12 +13,16 @@ namespace Core.Entities
         public DateTime ReleaseDate { get; set; }
         public int Duration { get; set; }
 
+        [JsonIgnore]
         public ICollection<MovieGenre> GenresLink { get; set; }
 
+        [JsonIgnore]
         public ICollection<MovieWriter> WritersLink { get; set; }
 
+        [JsonIgnore]
         public ICollection<MovieActor> ActorsLink { get; set; }
-
+        
+        [JsonIgnore]
         public ICollection<MovieDirector> DirectorsLink { get; set; }
     }
 }

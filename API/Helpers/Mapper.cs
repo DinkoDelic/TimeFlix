@@ -172,5 +172,21 @@ namespace API.Helpers
 
             return movieToUpdate;
         }
+
+        // public async Task<CrewDto> MapCrewToCrewDto(Crew crew)
+        // {
+        //     var crewToReturn = new CrewDto() {
+        //         Id = crew.Id,
+        //         Name = crew.Name,
+        //         ImageUrl = crew.ImageUrl,
+        //         MovieList = crew.
+        //     }
+
+        //             // Check to see if the lists are included, if not assign null
+        //             Genres = m.GenresLink != null ? m.GenresLink.Select(a => a.Genre).ToList() : null,
+        //             Actors = m.ActorsLink != null ? m.ActorsLink.Select(a => a.Actor).ToList() : null,
+        //             Writers = m.WritersLink != null ? m.WritersLink.Select(w => w.Writer).ToList() : null,
+        //             Directors = m.DirectorsLink != null ? m.DirectorsLink.Select(d => d.Director).ToList() : null
+        // }
     }
 }

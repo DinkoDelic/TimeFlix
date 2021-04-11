@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
@@ -8,11 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { error } from 'selenium-webdriver';
+import { Location } from '@angular/common';
 import { GenreList } from 'src/app/helpers/genreList';
 import { IActor } from 'src/app/_models/IActor';
 import { IDirector } from 'src/app/_models/IDirector';
-import { IGenre } from 'src/app/_models/IGenre';
+
 import { IImage } from 'src/app/_models/IImage';
 import { IMovie } from 'src/app/_models/IMovie';
 import { IWriter } from 'src/app/_models/IWriter';
@@ -32,10 +31,11 @@ export class MovieEditComponent implements OnInit {
   constructor(
     private movieService: MovieService,
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private location: Location
   ) {}
 
-  async ngOnInit(): Promise<void> {
+   ngOnInit(){
     // uses activatedRoute to grab id paramater from url
     this.movieService
       .getMovie(this.activatedRoute.snapshot.paramMap.get('movieid'))
@@ -94,6 +94,7 @@ export class MovieEditComponent implements OnInit {
           console.log(error);
         }
       );
+
     }
   }
 
