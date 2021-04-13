@@ -102,7 +102,7 @@ namespace API.Controllers
             var movieToUpdate = await _movieRepo.GetMovieByIdAsync(movieDto.MovieId);
 
             if(movieToUpdate == null)
-                return BadRequest();
+                return BadRequest(new ApiResponse(404));
 
 
             _movieRepo.Update(await _mapper.UpdateMovie(movieDto, movieToUpdate));

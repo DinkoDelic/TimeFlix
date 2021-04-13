@@ -60,7 +60,7 @@ namespace API.Controllers
         //Writer requests
         //
         [HttpGet("writer")]
-        public async Task<ActionResult<Pagination<Writer>>> GetWriters(UserParams userParams)
+        public async Task<ActionResult<Pagination<Writer>>> GetWriters([FromQuery] UserParams userParams)
         {
             var writers = await _writerRepo.ListAllAsync(userParams);
 
@@ -93,7 +93,7 @@ namespace API.Controllers
         //Director requests
         //
          [HttpGet("director")]
-        public async Task<ActionResult<Pagination<Director>>> GetDirectors(UserParams userParams)
+        public async Task<ActionResult<Pagination<Director>>> GetDirectors([FromQuery]UserParams userParams)
         {
             var directors = await _directorRepo.ListAllAsync(userParams);
 

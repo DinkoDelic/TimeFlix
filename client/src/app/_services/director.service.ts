@@ -9,13 +9,13 @@ import { IDirector } from '../_models/IDirector';
 @Injectable({
   providedIn: 'root',
 })
-export class Directorservice {
+export class DirectorService {
   directors: IDirector[];
 
   constructor(private http: HttpClient) {}
 
   // Get paginated response
-  getdirectors(userParams: UserParams) {
+  getDirectors(userParams: UserParams) {
     let params = new HttpParams();
     if (userParams.currentPage !== 0) {
       params = params.append('currentPage', userParams.currentPage.toString());

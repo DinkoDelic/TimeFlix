@@ -1,0 +1,31 @@
+.main{
+    background-color: #212121;
+    border:3px solid black; 
+    width: 13rem;
+}
+.main:hover{
+    border-color: #14ffec;
+    .teal{
+        border-color: #14ffec;
+    }
+}
+
+.teal {
+    background-color: transparent !important;
+    border: 2px solid black;
+    color: #FFFFFF;
+    min-width: 110px;
+}
+.teal:hover{
+    background-color: #14ffec !important;
+    color: black;
+}
+.search-btn{
+    background-color: transparent !important;
+    border: 1px solid  #0d7377;
+    color: #FFFFFF;
+}
+.search-btn:hover{
+    background-color: #0d7377 !important;
+    color: black;
+}

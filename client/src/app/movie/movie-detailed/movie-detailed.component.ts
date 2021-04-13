@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { error } from 'selenium-webdriver';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IMovie } from 'src/app/_models/IMovie';
 import { MovieService } from 'src/app/_services/movie.service';
 
@@ -14,13 +13,13 @@ export class MovieDetailedComponent implements OnInit {
 
   constructor(
     private movieService: MovieService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-   this.getMovie();
+    this.getMovie();
   }
-
 
   getMovie() {
     // uses activatedRoute to grab id paramater from url
@@ -45,5 +44,15 @@ export class MovieDetailedComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  navigateToCrew(id, type: string) {
+    if (type == 'actor') {
+      this.router.navigateByUrl('crew/actors/' + id);
+    } else if (type === 'writer') {
+      this.router.navigateByUrl('crew/writers/' + id);
+    } else {
+      this.router.navigateByUrl('crew/directors/' + id);
+    }
   }
 }

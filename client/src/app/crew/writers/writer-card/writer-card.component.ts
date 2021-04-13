@@ -8,11 +8,9 @@ import { IWriter } from 'src/app/_models/IWriter';
 })
 export class WriterCardComponent implements OnInit {
   @Input() writer: IWriter;
-  imageUrl: string;
   constructor() { }
 
   ngOnInit(): void {
-    this.imageUrl = this.writer.imageUrl ?? '../../../../assets/PlaceholderImage.png';
   }
 
 }

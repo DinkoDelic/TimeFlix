@@ -1,17 +1,17 @@
-<div class="container pt-4" *ngIf="writer">
+<div class="container pt-4" *ngIf="director">
     <div class="d-flex-block justify-content-center" style="width:fit-content; color: #FFFFFF;">
       <div class="d-inline-block mb-3 mr-4">
         <img
           style="width: 284px; height: 300px; border: 3px solid #212121"
-          src="{{writer.imageUrl}}"
+          src="{{director.imageUrl}}"
           alt="profile image"
         />
       </div>
       <div class="d-inline-block align-top">
-        <h2 class="mb-4">{{ writer.name }}</h2>
-        <h4 class="mb-4 text-muted">Worked on:</h4>
+        <h2 class="mb-4">{{ director.name }}</h2>
+        <h4 class="mb-4 text-muted">Directed:</h4>
         <div class="d-block my-2 interact">
-         <p (click)="navigateToMovie(movie.movieId)" *ngFor="let movie of writer.movieList">{{movie.title}}</p>
+         <p (click)="navigateToMovie(movie.movieId)" *ngFor="let movie of director.movieList">{{movie.title}}</p>
         </div>
       </div>
     </div>

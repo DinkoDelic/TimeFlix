@@ -20,7 +20,7 @@ export class MovieCreateComponent implements OnInit {
   movie: IMovie;
   genreList;
   myForm: FormGroup;
-  img: IImage;
+  img?: IImage;
 
   constructor(private fb: FormBuilder, private movieService: MovieService) {}
 
@@ -116,7 +116,7 @@ export class MovieCreateComponent implements OnInit {
       imageUrl: new FormControl(),
     });
     this.getDogImage();
-    director.get('imageUrl').setValue(this.img.message);
+    director.get('imageUrl').setValue(this.img.message ?? '../../../../assets/PlaceholderImage.png');
 
     this.directorForms.push(director);
   }

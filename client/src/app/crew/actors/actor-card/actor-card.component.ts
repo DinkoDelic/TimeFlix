@@ -8,11 +8,10 @@ import { IActor } from 'src/app/_models/IActor';
 })
 export class ActorCardComponent implements OnInit {
   @Input() actor: IActor;
-  imageUrl: string;
   constructor() { }
 
   ngOnInit(): void {
-    this.imageUrl = this.actor.imageUrl ?? '../../../../assets/PlaceholderImage.png';
+    this.actor.imageUrl = this.actor.imageUrl ?? '../../../../assets/PlaceholderImage.png';
   }
 
 }

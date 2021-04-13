@@ -1,8 +1,14 @@
 .main {
-    color:white;
-    background-color: #323232;
+  color: white;
+  background-color:inherit;
 }
-    
-button{
-    max-height: 90px;
+
+button {
+  max-height: 90px;
+}
+
+.title {
+  font-size: 3.6rem;
+  color: #14ffec;
+  font-weight: 550;
 }

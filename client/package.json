@@ -23,10 +23,13 @@
     "@types/chart.js": "^2.9.31",
     "angular-bootstrap-md": "^11.0.0",
     "animate.css": "^4.1.1",
+    "bootstrap": "^4.6.0",
     "chart.js": "^2.5.0",
     "eva-icons": "^1.1.3",
+    "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "ngx-bootstrap": "^6.2.0",
+    "ngx-spinner": "^11.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
