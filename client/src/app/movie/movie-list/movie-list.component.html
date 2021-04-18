@@ -2,7 +2,7 @@
   <!-- ng-If checks if movies are loaded before rendering template, otherwise we get a console error -->
   <div class="p-3" *ngIf="movies">
     <div class="d-flex justify-content-between mb-4">
-      <h2 class="d-inline-block" style="font-size: 2.5rem;">Movies</h2>
+      <h1 class="d-inline-block title">Movies</h1>
     <button
       class="d-inline btn mt-3 teal"
       style="width: 110px"
@@ -45,9 +45,12 @@
   </div>
 
   <!-- Passing movie object to child movie-card component -->
-  <div class="container-flex" *ngFor="let movie of movies">
-    <app-movie-card [movie]="movie"></app-movie-card>
+  <div *ngIf="movies" [@listAnimation]="movies.length">
+    <div class="container-flex" *ngFor="let movie of movies">
+      <app-movie-card [movie]="movie"></app-movie-card>
+    </div>
   </div>
+  
 
   <!-- pagination -->
   <div class="d-flex justify-content-center pt-3">
@@ -55,7 +58,8 @@
       *ngIf="this.itemCount > this.userParam.offset"
       (pageChanged)="pageChanged($event)"
       [itemsPerPage]="userParam.offset"
-      [boundaryLinks]="true"
+      [boundaryLinks]="false"
+      [directionLinks]="false"
       [totalItems]="this.itemCount"
       previousText="&lsaquo;"
       nextText="&rsaquo;"

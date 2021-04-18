@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,61 @@ namespace Infrastructure.Data
             _movieContext = movieContext;
         }
 
-        public async Task<List<T>> ListAllAsync()
+        public async Task<List<T>> ListAllAsync(UserParams userParams)
         {
-            return await _movieContext.Set<T>().ToListAsync();
+            return await _movieContext.Set<T>()
+                .OrderBy(x => x.Name)
+                .Skip((userParams.CurrentPage - 1) * userParams.Offset)
+                .Take(userParams.Offset)
+                .ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+
+        public async Task<List<T>> ListByNameAsync(UserParams userParams)
         {
-            return await _movieContext.Set<T>().FindAsync(id);
+            return await _movieContext.Set<T>()
+                .Where(x => x.Name.ToLower().Contains(userParams.nameFilter.ToLower()))
+                .Skip((userParams.CurrentPage - 1) * userParams.Offset)
+               .Take(userParams.Offset)
+               .ToListAsync();
         }
 
-
-        public async Task<List<T>> ListByNameAsync(string name)
+        public async Task<T> FindByNameAsync(string name)
         {
-            return await _movieContext.Set<T>().Where(x => x.Name.ToLower().Contains(name.ToLower())).ToListAsync();
+            var objectToReturn = await _movieContext.Set<T>().Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+
+            if (objectToReturn != null)
+                return objectToReturn;
+
+            return null;
         }
 
-        public async Task<T> FindByName(string name)
+        public async Task<int> GetTotalCountAsync(UserParams userParams)
         {
-            return await _movieContext.Set<T>().Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+            if (userParams.nameFilter != null)
+                return await _movieContext.Set<T>()
+                    .Where(m => m.Name.ToLower().Contains(userParams.nameFilter.ToLower()))
+                    .CountAsync();
+            else
+                return await _movieContext.Set<T>().CountAsync();
+        }
+
+        public async Task<Actor> GetActorByIdAsync(int id)
+        {
+            return await _movieContext.Set<Actor>()
+                .Include(a => a.MoviesLink)
+                .ThenInclude(a => a.Movie)
+                .FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<Writer> GetWriterByIdAsync(int id)
+        {
+            return await _movieContext.Set<Writer>().Include(a => a.MoviesLink).ThenInclude(a => a.Movie).FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<Director> GetDirectorByIdAsync(int id)
+        {
+            return await _movieContext.Set<Director>().Include(a => a.MoviesLink).ThenInclude(a => a.Movie).FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }

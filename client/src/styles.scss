@@ -3,8 +3,14 @@ html,
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
 }
 
 .container {
   max-width: 800px;
+  cursor: default;
+}
+
+.title {
+  font-family:Lora;
 }

@@ -1,0 +1,67 @@
+<div class="container d-flex flex-column main p-3 justify-content-center">
+    <!-- ng-If checks if writers are loaded before rendering template, otherwise we get a console error -->
+    <div class="p-3" *ngIf="writers">
+      <div class="d-flex justify-content-between mb-4">
+        <h1 class="d-inline-block">Writers</h1>
+      </div>
+  
+      <!-- Search -->
+      <div class="d-flex justify-content-between">
+        <input
+          #search
+          class="d-inline form-control"
+          type="text"
+          (keyup.enter)="onSearch()"
+          placeholder="Search"
+          style="width: 50%; max-width: 360px;"
+        />
+        <div class="d-inline mr-1" style="padding: 0">
+          <button
+            class="d-inline btn btn-outline btn-sm search-btn"
+            (click)="onSearch()"
+            style="width: 40px"
+          >
+            <i class="fa fa-search"></i>
+          </button>
+          <button
+            class="d-inline btn btn-outline-secondary btn-sm ml-3"
+            (click)="onReset()"
+            style="width: 40px"
+          >
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <small class="d-block ml-1 mt-2"
+        >Showing {{ writers.length }} out of {{ itemCount }} results</small
+      >
+    </div>
+  
+    <!-- Passing movie object to child movie-card component -->
+    <div class="row" *ngIf="writers" [@listAnimation]="writers">
+      <div class="col-sm-6 col-md-4" *ngFor="let writer of writers">
+        <div class="d-flex justify-content-center align-content-center my-3">
+          <app-writer-card [writer]="writer"></app-writer-card>
+        </div>
+      </div>
+    </div>
+  
+  
+    <!-- pagination -->
+    <div class="d-flex justify-content-center pt-3">
+      <pagination
+        *ngIf="this.itemCount > this.userParam.offset"
+        (pageChanged)="pageChanged($event)"
+        [itemsPerPage]="userParam.offset"
+        [boundaryLinks]="false"
+        [directionLinks]="false"
+        [totalItems]="this.itemCount"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+        firstText="&laquo;"
+        lastText="&raquo;"
+      >
+      </pagination>
+    </div>
+  </div>
+  

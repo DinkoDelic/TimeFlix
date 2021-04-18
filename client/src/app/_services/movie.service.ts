@@ -5,6 +5,7 @@ import { IPagination } from '../_models/IPagination';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { UserParams } from '../helpers/userParams';
+import { IImage } from '../_models/IImage';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
-  GetMovies(userParams: UserParams) {
+  // Get paginated response
+  getMovies(userParams: UserParams) {
     let params = new HttpParams();
     if (userParams.currentPage !== 0)
     {
@@ -39,7 +41,39 @@ export class MovieService {
     )
   }
 
-  GetMovie(id:any) {
+  // Get individual movie
+  getMovie(id:any) {
     return this.http.get<IMovie>(environment.url + 'Movie/' + id);
+  }
+
+  createMovie(movie: IMovie)
+  {
+    return this.http.post<IMovie>(environment.url + 'Movie/', movie , {observe: 'response'})
+      .pipe(
+        map(
+          response => {
+            return response.statusText;
+          }
+        )
+      );
+  }
+
+  updateMovie(movie: IMovie) {
+    return this.http.put(environment.url + 'Movie/', movie, {observe: 'response'})
+      .pipe(
+        map(
+          response => {
+            return response.url;
+          }
+        )
+      );
+  }
+
+  deleteMovie(id) {
+    return this.http.delete(environment.url + 'Movie/' + id);
+  }
+
+  GetDogImage() {
+    return this.http.get<IImage>('https://dog.ceo/api/breeds/image/random', {observe: 'response'});
   }
 }

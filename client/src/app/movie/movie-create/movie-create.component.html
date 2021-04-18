@@ -1,5 +1,5 @@
 <div class="container main p-4 d-flex flex-column justify-content-center">
-  <h2 class="d-block" style="margin: 0 auto">Add a movie</h2>
+  <h1 class="d-block title" style="margin: 0 auto;">Add a movie</h1>
   <div class="d-flex main justify-content-center">
     <form [formGroup]="myForm">
       <!-- TITLE -->
@@ -103,6 +103,7 @@
                 [typeahead]="genreList.list"
                 type="text"
                 id="name"
+                autocomplete="off"
                 formControlName="name"
                 style="color: white"
                 class="form-control form-control-sm"
@@ -167,12 +168,12 @@
           <label for="writer">Writers</label>
           <div class="d-inline">
             <button class="btn teal" (click)="addWriter()">
-              Add<i class="fa fa-plus"></i>
+              Add <i class="fa fa-plus"></i>
             </button>
           </div>
           <div
             class="d-flex justify-content-start"
-            *ngFor="let writers of writerForms.controls; let i = index"
+            *ngFor="let writer of writerForms.controls; let i = index"
             [formGroupName]="i"
           >
             <div class="md-form form-sm d-inline mt-3">

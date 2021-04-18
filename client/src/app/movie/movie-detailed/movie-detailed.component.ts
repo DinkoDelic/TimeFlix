@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IMovie } from 'src/app/_models/IMovie';
 import { MovieService } from 'src/app/_services/movie.service';
 
@@ -13,13 +13,18 @@ export class MovieDetailedComponent implements OnInit {
 
   constructor(
     private movieService: MovieService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.getMovie();
+  }
+
+  getMovie() {
     // uses activatedRoute to grab id paramater from url
     this.movieService
-      .GetMovie(this.activatedRoute.snapshot.paramMap.get('movieid'))
+      .getMovie(this.activatedRoute.snapshot.paramMap.get('movieid'))
       .subscribe(
         (response) => {
           this.movie = response;
@@ -28,5 +33,26 @@ export class MovieDetailedComponent implements OnInit {
           console.log(error);
         }
       );
+  }
+
+  deleteMovie(id) {
+    return this.movieService.deleteMovie(id).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  navigateToCrew(id, type: string) {
+    if (type == 'actor') {
+      this.router.navigateByUrl('crew/actors/' + id);
+    } else if (type === 'writer') {
+      this.router.navigateByUrl('crew/writers/' + id);
+    } else {
+      this.router.navigateByUrl('crew/directors/' + id);
+    }
   }
 }

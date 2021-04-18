@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -7,8 +6,11 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { delay } from 'rxjs/operators';
 import { GenreList } from 'src/app/helpers/genreList';
+import { IImage } from 'src/app/_models/IImage';
 import { IMovie } from 'src/app/_models/IMovie';
+import { MovieService } from 'src/app/_services/movie.service';
 
 @Component({
   selector: 'app-movie-create',
@@ -19,18 +21,18 @@ export class MovieCreateComponent implements OnInit {
   movie: IMovie;
   genreList;
   myForm: FormGroup;
-  director: FormGroup;
-  genre: FormGroup;
-  actor: FormGroup;
-  writer: FormGroup;
+  img?: IImage;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private movieService: MovieService) {}
 
   ngOnInit(): void {
     this.createForm();
+    // Used for auto complete function when adding genres
     this.genreList = new GenreList();
+    //this.getDogImage();
   }
 
+  // Using form builder to create form
   createForm() {
     this.myForm = this.fb.group({
       title: new FormControl('', Validators.required),
@@ -45,11 +47,46 @@ export class MovieCreateComponent implements OnInit {
     });
   }
 
+  // Gets random dog image for crew
+  getDogImage() {
+    this.movieService.GetDogImage().subscribe(
+      (response) => {
+        this.img = response.body;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
   createNew() {
     if (this.myForm.valid) {
       this.movie = Object.assign({}, this.myForm.value);
     }
-    console.log(this.movie);
+    this.movie.genres = this.reduce(this.movie.genres);
+    this.movie.directors = this.reduce(this.movie.directors);
+    this.movie.writers = this.reduce(this.movie.writers);
+    this.movie.actors = this.reduce(this.movie.actors);
+    this.movieService.createMovie(this.movie).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  // Removes duplicates from our form
+  reduce(array: Array<any>) {
+    const res = [];
+    array.map(function (item: any) {
+      const existItem = res.find((x) => x.name === item.name);
+      if (!existItem) {
+        res.push(item);
+      }
+    });
+    return res;
   }
 
   // Adding and removing genres
@@ -58,11 +95,11 @@ export class MovieCreateComponent implements OnInit {
   }
 
   addGenre() {
-    this.genre = this.fb.group({
+    const genre = this.fb.group({
       name: new FormControl('', Validators.required),
     });
 
-    this.genreForms.push(this.genre);
+    this.genreForms.push(genre);
   }
   deleteGenre(i) {
     this.genreForms.removeAt(i);
@@ -74,11 +111,16 @@ export class MovieCreateComponent implements OnInit {
   }
 
   addDirector() {
-    this.director = this.fb.group({
+    const director = this.fb.group({
       name: new FormControl('', Validators.required),
+      imageUrl: new FormControl(),
     });
+    this.getDogImage();
+    director
+      .get('imageUrl')
+      .setValue(this.img ? this.img.message : '../../../../assets/PlaceholderImage.png');
 
-    this.directorForms.push(this.director);
+    this.directorForms.push(director);
   }
   deleteDirector(i) {
     this.directorForms.removeAt(i);
@@ -90,11 +132,15 @@ export class MovieCreateComponent implements OnInit {
   }
 
   addWriter() {
-    this.writer = this.fb.group({
+    const writer = this.fb.group({
       name: new FormControl('', Validators.required),
+      imageUrl: new FormControl(),
     });
-
-    this.writerForms.push(this.writer);
+    this.getDogImage();
+    writer
+      .get('imageUrl')
+      .setValue(this.img.message ?? '../../../../assets/PlaceholderImage.png');
+    this.writerForms.push(writer);
   }
   deleteWriter(i) {
     this.writerForms.removeAt(i);
@@ -106,11 +152,15 @@ export class MovieCreateComponent implements OnInit {
   }
 
   addActor() {
-    this.actor = this.fb.group({
+    const actor = this.fb.group({
       name: new FormControl('', Validators.required),
+      imageUrl: new FormControl(),
     });
-
-    this.actorForms.push(this.actor);
+    this.getDogImage();
+    actor
+      .get('imageUrl')
+      .setValue(this.img.message ?? '../../../../assets/PlaceholderImage.png');
+    this.actorForms.push(actor);
   }
   deleteActor(i) {
     this.actorForms.removeAt(i);

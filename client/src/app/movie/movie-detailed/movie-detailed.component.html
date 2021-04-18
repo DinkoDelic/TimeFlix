@@ -1,8 +1,10 @@
 <div class="container p-3 main" *ngIf="movie">
-  <h2 class="d-inline-block my-3 mr-2">{{ movie.title }}</h2>
-  <small class="d-inline-block" style="color:  #14ffec;">{{ movie.ageRating }}</small>
+  <h1 class="d-inline-block my-3 mr-2 title">{{ movie.title }}</h1>
+  <small class="d-inline-block" style="color: #14ffec">{{
+    movie.ageRating
+  }}</small>
 
-  <p class="mt-2" style="font-size: 1.2rem;">{{ movie.storyline }}</p>
+  <p class="mt-2" style="font-size: 1.4rem">{{ movie.plot }}</p>
   <small class="d-inline-block mr-2 text-muted"
     >Duration: {{ movie.duration }} minutes</small
   >
@@ -12,15 +14,15 @@
   <!-- Genre -->
   <div class="d-block">
     <h4 class="d-block mt-3 text-muted">Genre:</h4>
-    <ul class="d-inline list-group list-group-horizontal-md">
-      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
-        Action
-      </li>
-      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
-        Drama
-      </li>
-      <li class="d-inline-block mr-2 ml-1" style="border: 0; padding: 0">
-        Fantasy
+    <ul
+      class="d-inline list-group list-group-horizontal-md ml-1"
+      *ngFor="let genre of movie.genres"
+    >
+      <li
+        class="mr-3 d-inline-block"
+        style="max-width: 20rem; border: 0; padding: 0"
+      >
+        {{ genre.name }}
       </li>
     </ul>
   </div>
@@ -32,7 +34,11 @@
       class="d-inline list-group list-group-horizontal-md ml-1"
       *ngFor="let director of movie.directors"
     >
-      <li class="mr-3 d-inline-block" style="border: 0; padding: 0">
+      <li
+        class="mr-3 d-inline-block interact"
+        (click)="navigateToCrew(director.id, 'director')"
+        style="border: 0; padding: 0"
+      >
         {{ director.name }}
       </li>
     </ul>
@@ -45,7 +51,11 @@
       class="d-inline list-group list-group-horizontal-md"
       *ngFor="let writer of movie.writers"
     >
-      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+      <li
+        class="mr-2 ml-1 d-inline-block interact"
+        (click)="navigateToCrew(writer.id, 'writer')"
+        style="border: 0; padding: 0"
+      >
         {{ writer.name }}
       </li>
     </ul>
@@ -58,17 +68,30 @@
       class="d-inline list-group list-group-horizontal-md"
       *ngFor="let actor of movie.actors"
     >
-      <li class="mr-2 ml-1 d-inline-block" style="border: 0; padding: 0">
+      <li
+        class="mr-2 ml-1 d-inline-block interact"
+        (click)="navigateToCrew(actor.id, 'actor')"
+        style="border: 0; padding: 0"
+      >
         {{ actor.name }}
       </li>
     </ul>
   </div>
   <!-- edit and delete -->
   <div class="d-flex justify-content-end mt-2">
-    <button class="d-inline btn btn-outline-info btn-lg mr-3" routerLink="edit/" mdbWavesEffect>
+    <button
+      class="d-inline btn btn-outline-info btn-lg mr-3"
+      routerLink="edit/"
+      mdbWavesEffect
+    >
       Edit
     </button>
-    <button class="d-inline btn btn-outline-danger btn-lg" mdbWavesEffect>
+    <button
+      class="d-inline btn btn-outline-danger btn-lg"
+      (click)="deleteMovie(movie.movieId)"
+      routerLink="movies"
+      mdbWavesEffect
+    >
       Delete
     </button>
   </div>
