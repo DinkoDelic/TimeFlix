@@ -11,7 +11,6 @@ export class ActorCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.actor.imageUrl = this.actor.imageUrl ?? '../../../../assets/PlaceholderImage.png';
   }
 
 }

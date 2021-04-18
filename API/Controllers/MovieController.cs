@@ -32,12 +32,12 @@ namespace API.Controllers
             if (userParams.nameFilter != null)
             {
                 movies = await _movieRepo.SearchMoviesByNameAsync(userParams);
-                
+
             }
             //returns full movie collection
             else
             {
-                movies = await _movieRepo.GetAllMoviesAsync(userParams);   
+                movies = await _movieRepo.GetAllMoviesAsync(userParams);
             }
 
             int movieCount = await _movieRepo.GetTotalMovieCount(userParams);
@@ -46,8 +46,6 @@ namespace API.Controllers
                 return NotFound(new ApiResponse(404));
 
             var moviesToReturn = _mapper.MapMovieToMovieDtoList(movies);
-
-
 
             return Ok(new Pagination<MovieDto>(moviesToReturn, userParams.CurrentPage, movieCount, userParams.Offset));
         }
@@ -60,7 +58,7 @@ namespace API.Controllers
             if (movie == null)
                 return NotFound(new ApiResponse(404));
 
-            // Because the mapper method takes in and returns list we have grab first item
+            // Because mapper method takes in and returns list we have to grab first item in the list
             var movieToReturn = _mapper.MapMovieToMovieDtoList(new List<Movie> { movie }).First();
 
             return Ok(movieToReturn);
@@ -78,13 +76,14 @@ namespace API.Controllers
             if (await _movieRepo.SaveChangesAsync())
                 return CreatedAtRoute("GetMovie", new { controller = "Movie", id = createdMovie.MovieId }, movieToCreate);
 
-            return BadRequest("Failed to create movie");
+            return BadRequest(new ApiResponse(500));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
             var movieToDelete = await _movieRepo.GetMovieByIdAsync(id);
+
             if (movieToDelete == null)
                 return BadRequest(new ApiResponse(404));
 
@@ -93,7 +92,7 @@ namespace API.Controllers
             if (await _movieRepo.SaveChangesAsync())
                 return NoContent();
 
-            return BadRequest("Failed to delete a movie");
+            return BadRequest(new ApiResponse(500));
         }
 
         [HttpPut]
@@ -101,16 +100,16 @@ namespace API.Controllers
         {
             var movieToUpdate = await _movieRepo.GetMovieByIdAsync(movieDto.MovieId);
 
-            if(movieToUpdate == null)
+            if (movieToUpdate == null)
                 return BadRequest(new ApiResponse(404));
 
 
             _movieRepo.Update(await _mapper.UpdateMovie(movieDto, movieToUpdate));
 
-            if(await _movieRepo.SaveChangesAsync()) 
+            if (await _movieRepo.SaveChangesAsync())
                 return NoContent();
-            
-            return BadRequest("Failed to update movie");
+
+            return BadRequest(new ApiResponse(500));
         }
 
     }

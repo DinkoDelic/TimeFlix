@@ -74,6 +74,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("AgeRating")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Duration")
@@ -86,6 +87,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("MovieId");

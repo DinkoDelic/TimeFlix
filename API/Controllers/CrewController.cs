@@ -29,7 +29,17 @@ namespace API.Controllers
         [HttpGet("actor")]
         public async Task<ActionResult<Pagination<Actor>>> GetActors([FromQuery] UserParams userParams)
         {
-            var actors = await _actorRepo.ListAllAsync(userParams);
+            var actors = new List<Actor>();
+            // Search by name
+            if(userParams.nameFilter != null)
+            {
+                actors = await _actorRepo.ListByNameAsync(userParams);
+            }
+            // Return all results
+            else
+            {
+                actors = await _actorRepo.ListAllAsync(userParams);
+            }
 
             var totalCount = await _actorRepo.GetTotalCountAsync(userParams);
 
@@ -62,7 +72,19 @@ namespace API.Controllers
         [HttpGet("writer")]
         public async Task<ActionResult<Pagination<Writer>>> GetWriters([FromQuery] UserParams userParams)
         {
-            var writers = await _writerRepo.ListAllAsync(userParams);
+           var writers = new List<Writer>();
+
+            // Search by name
+            if(userParams.nameFilter != null)
+            {
+                writers = await _writerRepo.ListByNameAsync(userParams);
+            }
+
+            // Return all results
+            else
+            {
+                writers = await _writerRepo.ListAllAsync(userParams);
+            }
 
             var totalCount = await _writerRepo.GetTotalCountAsync(userParams);
 
@@ -95,8 +117,20 @@ namespace API.Controllers
          [HttpGet("director")]
         public async Task<ActionResult<Pagination<Director>>> GetDirectors([FromQuery]UserParams userParams)
         {
-            var directors = await _directorRepo.ListAllAsync(userParams);
+           var directors = new List<Director>();
 
+            // Search by name
+            if(userParams.nameFilter != null)
+            {
+                directors = await _directorRepo.ListByNameAsync(userParams);
+            }
+
+            // Return all results
+            else
+            {
+                directors = await _directorRepo.ListAllAsync(userParams);
+            }
+            
             var totalCount = await _directorRepo.GetTotalCountAsync(userParams);
 
             if(directors == null)

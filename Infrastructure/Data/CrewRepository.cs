@@ -26,9 +26,13 @@ namespace Infrastructure.Data
         }
 
 
-        public async Task<List<T>> ListByNameAsync(string name)
+        public async Task<List<T>> ListByNameAsync(UserParams userParams)
         {
-            return await _movieContext.Set<T>().Where(x => x.Name.ToLower().Contains(name.ToLower())).ToListAsync();
+            return await _movieContext.Set<T>()
+                .Where(x => x.Name.ToLower().Contains(userParams.nameFilter.ToLower()))
+                .Skip((userParams.CurrentPage - 1) * userParams.Offset)
+               .Take(userParams.Offset)
+               .ToListAsync();
         }
 
         public async Task<T> FindByNameAsync(string name)

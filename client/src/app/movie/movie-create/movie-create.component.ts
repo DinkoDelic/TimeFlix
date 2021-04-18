@@ -6,6 +6,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { delay } from 'rxjs/operators';
 import { GenreList } from 'src/app/helpers/genreList';
 import { IImage } from 'src/app/_models/IImage';
 import { IMovie } from 'src/app/_models/IMovie';
@@ -28,7 +29,7 @@ export class MovieCreateComponent implements OnInit {
     this.createForm();
     // Used for auto complete function when adding genres
     this.genreList = new GenreList();
-    this.getDogImage();
+    //this.getDogImage();
   }
 
   // Using form builder to create form
@@ -79,13 +80,12 @@ export class MovieCreateComponent implements OnInit {
   // Removes duplicates from our form
   reduce(array: Array<any>) {
     const res = [];
-    array.map(function (item) {
-      var existItem = res.find((x) => x.name === item.name);
+    array.map(function (item: any) {
+      const existItem = res.find((x) => x.name === item.name);
       if (!existItem) {
         res.push(item);
       }
     });
-    console.log(res);
     return res;
   }
 
@@ -116,7 +116,9 @@ export class MovieCreateComponent implements OnInit {
       imageUrl: new FormControl(),
     });
     this.getDogImage();
-    director.get('imageUrl').setValue(this.img.message ?? '../../../../assets/PlaceholderImage.png');
+    director
+      .get('imageUrl')
+      .setValue(this.img ? this.img.message : '../../../../assets/PlaceholderImage.png');
 
     this.directorForms.push(director);
   }
@@ -135,8 +137,9 @@ export class MovieCreateComponent implements OnInit {
       imageUrl: new FormControl(),
     });
     this.getDogImage();
-    writer.get('imageUrl').setValue(this.img.message);
-
+    writer
+      .get('imageUrl')
+      .setValue(this.img.message ?? '../../../../assets/PlaceholderImage.png');
     this.writerForms.push(writer);
   }
   deleteWriter(i) {
@@ -154,8 +157,9 @@ export class MovieCreateComponent implements OnInit {
       imageUrl: new FormControl(),
     });
     this.getDogImage();
-    actor.get('imageUrl').setValue(this.img.message);
-
+    actor
+      .get('imageUrl')
+      .setValue(this.img.message ?? '../../../../assets/PlaceholderImage.png');
     this.actorForms.push(actor);
   }
   deleteActor(i) {

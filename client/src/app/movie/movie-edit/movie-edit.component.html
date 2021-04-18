@@ -1,18 +1,19 @@
-<div class="container main p-3" *ngIf="movie">
-  <h1 class="d-block my-3">Edit</h1>
-  <h2 class="d-inline-block my-3 mr-2">{{ movie.title }}</h2>
-  <small class="d-inline-block" style="color: #14ffec">{{
-    movie.ageRating
-  }}</small>
-
-  <p class="mt-2" style="font-size: 1.2rem">{{ movie.storyline }}</p>
-  <small class="d-inline-block mr-2 text-muted"
-    >Duration: {{ movie.duration }} minutes</small
-  >
-  <small class="d-inline-block text-muted"
-    >Release date: {{ movie.releaseDate | date }}</small
-  >
-  <form [formGroup]="myForm">
+<div class="container main p-4 d-flex flex-column justify-content-center" *ngIf="movie">
+  <h1 class="d-block my-3" style="margin: 0 auto;">Edit {{movie.title}}</h1>
+  <div class="d-block" style="margin: 0 auto;">
+    <small class="d-block text-muted" style="text-align: center;">Rating: <span style="color: #14ffec;">{{
+      movie.ageRating
+    }}</span></small>
+  
+    <p class="mt-2" style="font-size: 1.2rem">{{ movie.storyline }}</p>
+    <small class="d-inline-block mr-2 text-muted"
+      >Duration: {{ movie.duration }} minutes</small
+    >
+    <small class="d-inline-block text-muted"
+      >Release date: {{ movie.releaseDate | date }}</small
+    >
+  </div>
+  <form [formGroup]="myForm" style="margin: 0 auto;">
     <!-- Genres -->
     <div class="mt-4">
       <div>
@@ -34,6 +35,7 @@
               [(value)]="genre.name"
               name="genreName"
               id="genreName"
+              autocomplete="off"
               style="color: white"
               class="form-control form-control-sm"
             />

@@ -1,4 +1,4 @@
 export interface IImage {
-    message: string;
+    message?: string;
     status: string;
 }

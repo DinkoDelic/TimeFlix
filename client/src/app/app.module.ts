@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { FooterComponent } from './footer/footer.component';
 
 
 
@@ -20,6 +21,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AppComponent,
     NavBarComponent,
     HomeComponent,
+    FooterComponent,
   ],
   imports: [
     CommonModule,

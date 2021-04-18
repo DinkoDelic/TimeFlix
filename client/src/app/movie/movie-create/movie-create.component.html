@@ -103,6 +103,7 @@
                 [typeahead]="genreList.list"
                 type="text"
                 id="name"
+                autocomplete="off"
                 formControlName="name"
                 style="color: white"
                 class="form-control form-control-sm"
@@ -167,7 +168,7 @@
           <label for="writer">Writers</label>
           <div class="d-inline">
             <button class="btn teal" (click)="addWriter()">
-              Add<i class="fa fa-plus"></i>
+              Add <i class="fa fa-plus"></i>
             </button>
           </div>
           <div

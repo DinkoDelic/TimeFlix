@@ -8,7 +8,7 @@ namespace Core.Interfaces
     public interface ICrewRepository<T> where T:Crew
     {
         Task<List<T>> ListAllAsync(UserParams userParams);
-        Task<List<T>> ListByNameAsync(string name);
+        Task<List<T>> ListByNameAsync(UserParams userParams);
         Task<T> FindByNameAsync(string name);
         Task<int> GetTotalCountAsync(UserParams userParams);
         Task<Actor> GetActorByIdAsync(int id);

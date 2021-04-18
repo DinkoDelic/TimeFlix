@@ -11,6 +11,7 @@ import { MovieDetailedComponent } from './movie-detailed/movie-detailed.componen
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { MovieEditComponent } from './movie-edit/movie-edit.component';
 import { MovieCreateComponent } from './movie-create/movie-create.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MovieCreateComponent } from './movie-create/movie-create.component';
     BsDatepickerModule.forRoot(),
     TypeaheadModule.forRoot(),
     FormsModule,
+    MDBBootstrapModule.forRoot()
   ]
 })
 export class MoviesModule { }

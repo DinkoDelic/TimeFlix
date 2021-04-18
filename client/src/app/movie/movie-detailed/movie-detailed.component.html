@@ -1,10 +1,10 @@
 <div class="container p-3 main" *ngIf="movie">
-  <h2 class="d-inline-block my-3 mr-2 title">{{ movie.title }}</h2>
+  <h1 class="d-inline-block my-3 mr-2 title">{{ movie.title }}</h1>
   <small class="d-inline-block" style="color: #14ffec">{{
     movie.ageRating
   }}</small>
 
-  <p class="mt-2" style="font-size: 1.2rem">{{ movie.plot }}</p>
+  <p class="mt-2" style="font-size: 1.4rem">{{ movie.plot }}</p>
   <small class="d-inline-block mr-2 text-muted"
     >Duration: {{ movie.duration }} minutes</small
   >
@@ -20,7 +20,7 @@
     >
       <li
         class="mr-3 d-inline-block"
-        style="font-size: 28px; max-width: 20rem; border: 0; padding: 0"
+        style="max-width: 20rem; border: 0; padding: 0"
       >
         {{ genre.name }}
       </li>

@@ -21,7 +21,10 @@ export class ActorService {
       params = params.append('currentPage', userParams.currentPage.toString());
     }
     // actors will be shown in sets of 6
-    params = params.append('offset', '6');
+    if (userParams.offset !== 0)
+    {
+      params = params.append('offset', '6');
+    }
 
     if (userParams.nameFilter !== null) {
       params = params.append('nameFilter', userParams.nameFilter.toString());
