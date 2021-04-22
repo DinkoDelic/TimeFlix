@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IMovie } from 'src/app/_models/IMovie';
 import { MovieService } from 'src/app/_services/movie.service';
+import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-movie-detailed',
@@ -10,11 +12,14 @@ import { MovieService } from 'src/app/_services/movie.service';
 })
 export class MovieDetailedComponent implements OnInit {
   movie: IMovie;
-
+  modalRef: BsModalRef;
+  url;
   constructor(
     private movieService: MovieService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -28,6 +33,8 @@ export class MovieDetailedComponent implements OnInit {
       .subscribe(
         (response) => {
           this.movie = response;
+          // tells angular this url is safe to inject in DOM
+          this.url =  this.sanitizer.bypassSecurityTrustResourceUrl(this.movie.trailerUrl);
         },
         (error) => {
           console.log(error);
@@ -54,5 +61,19 @@ export class MovieDetailedComponent implements OnInit {
     } else {
       this.router.navigateByUrl('crew/directors/' + id);
     }
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+ 
+  confirm(): void {
+    this.deleteMovie(this.movie.movieId);
+    this.modalRef.hide();
+    this.router.navigateByUrl('/');
+  }
+
+  decline(): void {
+    this.modalRef.hide();
   }
 }

@@ -12,10 +12,8 @@ namespace Core.Interfaces
         void Remove<T>(T entity) where T : class;
         void Update<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
-        Task<List<Movie>> GetAllMoviesAsync(UserParams userParams); 
+        Task<List<Movie>> GetAllMoviesAsync(UserParams userParams);
         Task<Movie> GetMovieByIdAsync(int id);
-                
-       
         Task<List<Movie>> SearchMoviesByNameAsync(UserParams userParams);
         Task<int> GetTotalMovieCount(UserParams userParams);
     }

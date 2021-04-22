@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ namespace API.Helpers
                     AgeRating = m.AgeRating,
                     ReleaseDate = m.ReleaseDate,
                     Duration = m.Duration,
+                    TrailerUrl = m.TrailerUrl,
                     // Check to see if the lists are included, if not assign null
                     Genres = m.GenresLink != null ? m.GenresLink.Select(a => a.Genre).ToList() : null,
                     Actors = m.ActorsLink != null ? m.ActorsLink.Select(a => a.Actor).ToList() : null,
@@ -57,8 +59,10 @@ namespace API.Helpers
                 Plot = dto.Plot,
                 AgeRating = dto.AgeRating,
                 ReleaseDate = dto.ReleaseDate,
-                Duration = dto.Duration
+                Duration = dto.Duration,
+                TrailerUrl = ReturnTrailerUrl(dto.TrailerUrl)
             };
+
 
             var genreList = new List<MovieGenre>();
             foreach (Genre g in dto.Genres)
@@ -188,5 +192,13 @@ namespace API.Helpers
         //             Writers = m.WritersLink != null ? m.WritersLink.Select(w => w.Writer).ToList() : null,
         //             Directors = m.DirectorsLink != null ? m.DirectorsLink.Select(d => d.Director).ToList() : null
         // }
+
+        // Url that we get from youtube doesn't work as embeded video so we have to modify it slighty
+        private string ReturnTrailerUrl(string trailerUrl)
+        {
+            string[] array = trailerUrl.Split('=');
+
+            return @"https://www.youtube.com/embed/" + array[1];
+        }
     }
 }

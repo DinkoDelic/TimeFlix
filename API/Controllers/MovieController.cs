@@ -74,7 +74,7 @@ namespace API.Controllers
             movieToCreate.MovieId = createdMovie.MovieId;
 
             if (await _movieRepo.SaveChangesAsync())
-                return CreatedAtRoute("GetMovie", new { controller = "Movie", id = createdMovie.MovieId }, movieToCreate);
+                return Ok();
 
             return BadRequest(new ApiResponse(500));
         }

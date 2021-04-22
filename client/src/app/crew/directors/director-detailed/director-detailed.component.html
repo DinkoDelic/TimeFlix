@@ -10,8 +10,8 @@
       <div class="d-inline-block align-top">
         <h2 class="mb-4">{{ director.name }}</h2>
         <h4 class="mb-4 text-muted">Directed:</h4>
-        <div class="d-block my-2 interact">
-         <p (click)="navigateToMovie(movie.movieId)" *ngFor="let movie of director.movieList">{{movie.title}}</p>
+        <div class="d-block my-2">
+         <p class="interact" (click)="navigateToMovie(movie.movieId)" *ngFor="let movie of director.movieList">{{movie.title}}</p>
         </div>
       </div>
     </div>

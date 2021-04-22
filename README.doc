@@ -1,0 +1,35 @@
+Instructions on how to start the app
+
+The project is divided into two parts: 
+	-Backend API with database which includes: API, Infrastructure and Core folders.
+	-Frontend Angular SPA which is located in Client folder.
+
+To run API you will need .NET 5.x SDK found here:
+	https://dotnet.microsoft.com/download
+
+To run Angular you will need NodeJs and npm (comes with nodejs by default). NodeJs can be found here:
+	https://nodejs.org/en/
+Please use LTS version of Node (14.16.1) cause that is the version I used and angular might run into issues 
+if you try installing it with the current version of Node (issues come from different npm versions).
+
+If you already have the latest NodeJs installed this article shows a tool that can be used to quickly switch between versions.
+	https://joachim8675309.medium.com/installing-node-js-with-nvm-4dc469c977d9
+
+After NodeJs and npm are installed you're ready to install angular by running this command in the terminal:
+	npm install -g @angular/cli@11.2.6
+@11.2.6 is the version I used, not strictly necessary to install that one but just in case. 
+You might see a few warnings after install but those are not relevant to the project.
+
+Now that everything is installed it's time to run the project. 
+To start the API, open a terminal window, navigate to TimeFlix/API folder and enter: "dotnet run". 
+This will start API server on port 5001 for https.
+
+To start angular project inside a new terminal window, navigate to TimeFlix/client folder and enter: "ng serve -o". 
+This will start SPA on port 4200. It might take a few minutes for the project to compile.
+
+That's it! Everything should be working as intended with the frontend making requests to the API. 
+But just in case there are any issues please send me an email at 10540097@mydbs.ie.
+
+Inside the API folder, I've included a dependency flow diagram to better explain my backend structure. 
+Code can be found on GitHub: 
+	https://github.com/DinkoDelic/TimeFlix

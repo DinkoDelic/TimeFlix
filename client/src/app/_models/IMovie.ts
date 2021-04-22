@@ -11,6 +11,7 @@ export interface IMovie {
   ageRating: string;
   releaseDate: Date;
   duration: number;
+  trailerUrl: string;
   writers?: IWriter[];
   actors?: IActor[];
   directors?: IDirector[];

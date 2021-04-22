@@ -52,7 +52,7 @@ export class MovieService {
       .pipe(
         map(
           response => {
-            return response.statusText;
+            return response;
           }
         )
       );

@@ -30,9 +30,10 @@ namespace Infrastructure.Data
         {
             return await _movieContext.Set<T>()
                 .Where(x => x.Name.ToLower().Contains(userParams.nameFilter.ToLower()))
+                .OrderBy(x => x.Name)
                 .Skip((userParams.CurrentPage - 1) * userParams.Offset)
-               .Take(userParams.Offset)
-               .ToListAsync();
+                .Take(userParams.Offset)
+                .ToListAsync();
         }
 
         public async Task<T> FindByNameAsync(string name)
@@ -65,12 +66,18 @@ namespace Infrastructure.Data
 
         public async Task<Writer> GetWriterByIdAsync(int id)
         {
-            return await _movieContext.Set<Writer>().Include(a => a.MoviesLink).ThenInclude(a => a.Movie).FirstOrDefaultAsync(a => a.Id == id);
+            return await _movieContext.Set<Writer>()
+                .Include(a => a.MoviesLink)
+                .ThenInclude(a => a.Movie)
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<Director> GetDirectorByIdAsync(int id)
         {
-            return await _movieContext.Set<Director>().Include(a => a.MoviesLink).ThenInclude(a => a.Movie).FirstOrDefaultAsync(a => a.Id == id);
+            return await _movieContext.Set<Director>()
+                .Include(a => a.MoviesLink)
+                .ThenInclude(a => a.Movie)
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }
