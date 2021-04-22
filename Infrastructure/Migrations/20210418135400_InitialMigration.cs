@@ -56,10 +56,11 @@ namespace Infrastructure.Migrations
                     MovieId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Plot = table.Column<string>(type: "TEXT", nullable: true),
                     AgeRating = table.Column<string>(type: "TEXT", nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Duration = table.Column<int>(type: "INTEGER", nullable: false)
+                    Duration = table.Column<int>(type: "INTEGER", nullable: false),
+                    Plot = table.Column<string>(type: "TEXT", nullable: true),
+                    TrailerUrl = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -30,7 +30,7 @@ import { FooterComponent } from './footer/footer.component';
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}

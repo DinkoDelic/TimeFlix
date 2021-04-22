@@ -11,6 +11,11 @@
   <small class="d-inline-block text-muted"
     >Release date: {{ movie.releaseDate | date }}</small
   >
+  <div class="trailer-container my-4" *ngIf="movie.trailerUrl">
+    <iframe class="responsive-iframe e2e-iframe-trusted-src"
+    [src]="url">
+    </iframe> 
+  </div>
   <!-- Genre -->
   <div class="d-block">
     <h4 class="d-block mt-3 text-muted">Genre:</h4>
@@ -78,21 +83,49 @@
     </ul>
   </div>
   <!-- edit and delete -->
-  <div class="d-flex justify-content-end mt-2">
+  <div class="d-flex justify-content-end mt-4">
     <button
-      class="d-inline btn btn-outline-info btn-lg mr-3"
+      class="d-inline btn btn-outline-info btn-lg mr-4"
       routerLink="edit/"
       mdbWavesEffect
     >
       Edit
     </button>
     <button
+      type="button"
+      class="d-inline btn btn-outline-danger btn-lg"
+      (click)="openModal(template)"
+    >
+      Delete
+    </button>
+    <br /><br />
+    <ng-template #template>
+      <div
+        class="modal-body text-center"
+        style="
+          background-color: #323232;
+          color: white;
+        "
+      >
+        <p>Are you sure you want to delete</p>
+        <span>{{ movie.title }}</span>
+        <div class="d-flex justify-content-center mt-3">
+          <button type="button" class="btn btn-primary" (click)="confirm()">
+            Yes
+          </button>
+          <button type="button" class="btn btn-danger ml-3" (click)="decline()">
+            No
+          </button>
+        </div>
+      </div>
+    </ng-template>
+    <!-- <button
       class="d-inline btn btn-outline-danger btn-lg"
       (click)="deleteMovie(movie.movieId)"
       routerLink="movies"
       mdbWavesEffect
     >
       Delete
-    </button>
+    </button> -->
   </div>
 </div>

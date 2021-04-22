@@ -5,6 +5,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { MovieListComponent } from './movie-list/movie-list.component';
 import { MovieDetailedComponent } from './movie-detailed/movie-detailed.component';
@@ -29,7 +30,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     BsDatepickerModule.forRoot(),
     TypeaheadModule.forRoot(),
     FormsModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    ModalModule.forRoot()
   ]
 })
 export class MoviesModule { }

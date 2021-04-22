@@ -10,13 +10,15 @@ namespace Core.Entities
         public int MovieId { get; set; }
         [Required]
         public string Title { get; set; }
-        public string Plot { get; set; }
         [Required]
         public string AgeRating { get; set; }
         [Required]
         public DateTime ReleaseDate { get; set; }
         [Required]
         public int Duration { get; set; }
+        public string Plot { get; set; }
+        public string TrailerUrl { get; set; }
+
         [JsonIgnore]
         public ICollection<MovieGenre> GenresLink { get; set; }
         [JsonIgnore]

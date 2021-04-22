@@ -6,6 +6,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { delay } from 'rxjs/operators';
 import { GenreList } from 'src/app/helpers/genreList';
 import { IImage } from 'src/app/_models/IImage';
@@ -23,13 +24,13 @@ export class MovieCreateComponent implements OnInit {
   myForm: FormGroup;
   img?: IImage;
 
-  constructor(private fb: FormBuilder, private movieService: MovieService) {}
+  constructor(private fb: FormBuilder, private movieService: MovieService, private router: Router) {}
 
   ngOnInit(): void {
     this.createForm();
     // Used for auto complete function when adding genres
     this.genreList = new GenreList();
-    //this.getDogImage();
+    this.getDogImage();
   }
 
   // Using form builder to create form
@@ -38,6 +39,7 @@ export class MovieCreateComponent implements OnInit {
       title: new FormControl('', Validators.required),
       duration: new FormControl('', Validators.required),
       plot: new FormControl(''),
+      trailerUrl: new FormControl(''),
       ageRating: new FormControl('PG-13', Validators.required),
       releaseDate: new FormControl('', Validators.required),
       genres: new FormArray([], Validators.required),
@@ -69,7 +71,8 @@ export class MovieCreateComponent implements OnInit {
     this.movie.actors = this.reduce(this.movie.actors);
     this.movieService.createMovie(this.movie).subscribe(
       (response) => {
-        console.log(response);
+        console.log(response.statusText);
+        this.router.navigateByUrl('/');
       },
       (error) => {
         console.log(error);

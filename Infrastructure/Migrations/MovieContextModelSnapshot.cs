@@ -90,6 +90,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("TrailerUrl")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("MovieId");
 
                     b.ToTable("Movies");
