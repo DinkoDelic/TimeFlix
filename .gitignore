@@ -4,3 +4,6 @@ appsettings.json
 *.db
 SPA
 node_modules/*
+Dockerfile
+.dockerignore
+docker-compose.yml
