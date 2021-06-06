@@ -4,4 +4,3 @@ bin
 SPA
 node_modules/*
 .dockerignore
-docker-compose.yml
