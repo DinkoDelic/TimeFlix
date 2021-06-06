@@ -4,3 +4,4 @@ bin
 SPA
 node_modules/*
 .dockerignore
+Jenkinsfile
