@@ -3,5 +3,4 @@ bin
 *.db
 SPA
 node_modules/*
-.dockerignore
 Jenkinsfile

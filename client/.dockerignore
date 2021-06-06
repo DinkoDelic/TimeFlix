@@ -1,0 +1,5 @@
+/e2e
+/docs
+/node_modules
+.git
+.gitignore
