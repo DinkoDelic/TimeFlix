@@ -16,15 +16,6 @@ services:
       - 5432:5432
     networks:
       - my-network
-
-  adminer:
-    container_name: db_admin
-    image: adminer
-    restart: always
-    ports:
-      - 9000:8080
-    networks:
-      - my-network
   api:
     image: dinkod/timeflix_api:latest
     container_name: api
@@ -39,7 +30,7 @@ services:
     depends_on: 
       - postgres
   client:
-    build: client/.
+    image: dinkod/timeflix_client:latest
     container_name: client
     expose: 
       - 80
