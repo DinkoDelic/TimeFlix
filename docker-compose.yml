@@ -39,7 +39,7 @@ services:
     depends_on: 
       - postgres
   client:
-    image: dinkod/timeflix_client:latest
+    build: client/.
     container_name: client
     expose: 
       - 80
