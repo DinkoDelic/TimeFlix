@@ -56,9 +56,9 @@ namespace API
             services.AddScoped<Mapper>();
             
 
-            // Using sqlite as db choice 
+            // Using PostgreSQL as db choice 
             services.AddDbContext<MovieContext>(x =>
-                x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+                x.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
 
             services.AddSwaggerGen(c =>
             {
@@ -74,11 +74,11 @@ namespace API
             // Used to handle server errors
             app.UseMiddleware<ExceptionMiddleware>();
 
-            if (env.IsDevelopment())
-            {
+            // if (env.IsDevelopment())
+            // {
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
-            }
+            // }
 
             // Requests to invalid endpoints get redirected to our error controller
             app.UseStatusCodePagesWithReExecute("/errors/{0}");

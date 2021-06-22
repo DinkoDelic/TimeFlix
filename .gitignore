@@ -1,6 +1,6 @@
 obj
 bin
-appsettings.json
 *.db
 SPA
 node_modules/*
+Jenkinsfile

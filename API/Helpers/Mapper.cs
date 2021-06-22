@@ -196,9 +196,13 @@ namespace API.Helpers
         // Url that we get from youtube doesn't work as embeded video so we have to modify it slighty
         private string ReturnTrailerUrl(string trailerUrl)
         {
+            if (trailerUrl == null || trailerUrl == "string")
+                return null;
+
             string[] array = trailerUrl.Split('=');
 
             return @"https://www.youtube.com/embed/" + array[1];
+
         }
     }
 }

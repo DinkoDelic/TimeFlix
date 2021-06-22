@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Postgresinitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,10 +12,10 @@ namespace Infrastructure.Migrations
                 name: "Actors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,10 +26,10 @@ namespace Infrastructure.Migrations
                 name: "Directors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,10 +40,10 @@ namespace Infrastructure.Migrations
                 name: "Genres",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,14 +54,14 @@ namespace Infrastructure.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    AgeRating = table.Column<string>(type: "TEXT", nullable: false),
-                    ReleaseDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Duration = table.Column<int>(type: "INTEGER", nullable: false),
-                    Plot = table.Column<string>(type: "TEXT", nullable: true),
-                    TrailerUrl = table.Column<string>(type: "TEXT", nullable: true)
+                    MovieId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    AgeRating = table.Column<string>(type: "text", nullable: false),
+                    ReleaseDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Duration = table.Column<int>(type: "integer", nullable: false),
+                    Plot = table.Column<string>(type: "text", nullable: true),
+                    TrailerUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,10 +72,10 @@ namespace Infrastructure.Migrations
                 name: "Writers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,8 +86,8 @@ namespace Infrastructure.Migrations
                 name: "MovieActor",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ActorId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<int>(type: "integer", nullable: false),
+                    ActorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,8 +110,8 @@ namespace Infrastructure.Migrations
                 name: "MovieDirector",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(type: "INTEGER", nullable: false),
-                    DirectorId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<int>(type: "integer", nullable: false),
+                    DirectorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,8 +134,8 @@ namespace Infrastructure.Migrations
                 name: "MovieGenre",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GenreId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<int>(type: "integer", nullable: false),
+                    GenreId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,8 +158,8 @@ namespace Infrastructure.Migrations
                 name: "MovieWriter",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(type: "INTEGER", nullable: false),
-                    WriterId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MovieId = table.Column<int>(type: "integer", nullable: false),
+                    WriterId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

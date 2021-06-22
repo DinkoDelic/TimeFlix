@@ -15,6 +15,7 @@ namespace Infrastructure.Data
         public DbSet<Director> Directors { get; set; }
         public DbSet<Genre> Genres { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Defining many-to-many movie-genre relationship
